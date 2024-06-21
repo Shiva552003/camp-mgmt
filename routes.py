@@ -2,11 +2,18 @@ from main import app
 from flask import session,request,render_template,flash,redirect,url_for
 from model import User,db
 from werkzeug.security import generate_password_hash,check_password_hash
+from wrapers import login_required
 
 @app.route('/')
+@login_required
 def home():
-   if session['username']:
-      return render_template('dashboard.html')
+   if 'username' in session and 'role' in session:
+      if session['role']=='admin':
+         return render_template('admin_dashboard.html')
+      if session['role']=='influencer':
+         return render_template('influ_dashboard.html')
+      if session['role']=='sponsor':
+         return render_template('spon_dashboard.html')
    else:
       flash('User not logged in',"danger")
       return redirect(url_for('login'))
@@ -27,7 +34,7 @@ def login_Post():
     return redirect(url_for('login'))
   else:
     session['username'] = username
-    flash("Login Successful","success")
+    session['role']=user.role
     return redirect(url_for('home'))
   
 @app.route('/register')
@@ -67,6 +74,3 @@ def register_Post():
 
         flash("Registration Successful","success")
         return redirect(url_for('login'))
-
-
-#Todo try these out today-20th June

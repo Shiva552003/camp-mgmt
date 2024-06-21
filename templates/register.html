@@ -1,43 +1,9 @@
 {% extends 'layout.html' %}
 {% block content %}
 <style>
-  .steps{
-    border: 2px solid rgb(186, 45, 186);
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    justify-content: center;
-    position: absolute;
-    background-color: white;
-    text-decoration:dotted;
-    color: black;
-  }
-  .steps.highlight{
-    color: white;
-    background-color: rgb(132, 19, 192);
-  }
-  .steps-container .steps:nth-child(3){
-    margin-left: 20%;
-  }
-  .steps-container .steps:last-child{
-    margin-left: 44%;
-  }
-  .steps-container{
-    display: flex;
-    width: 60%;
-    height: 50px;
-  }
 </style>
-{% if step_one %}
 <h1 class="center_item">Registration</h1>
 <div class="center_item">
-<div class="steps-container">
-  <div style="height:0; width:100%; border: 2px solid rgb(155, 38, 155); margin:24px"></div>
-  <a href="" class="steps center_item highlight">1</a>
-  <a href="" class="steps center_item">2</a>
-  <a href="" class="steps center_item">3</a>
-</div></div>
-<div class="center_item">
 <div class="container" style="padding: 5%;">
   <form action="" method="post">
     <div class="mb-3">
@@ -63,49 +29,15 @@
       </div>
       
     </div>
-    <div class="center_item">
-        <button type="submit" class="btn btn-primary">Next -></button>
-    </div>
-  </form>
-</div>
-<br>
-</div>
-  
-{% elif step_two_ %}
-<h1 class="center_item">{{userRole}} Registration</h1>
-<div class="center_item">
-<div class="steps-container">
-  <div style="height:0; width:100%; border: 2px solid rgb(155, 38, 155); margin:24px"></div>
-  <a href="" class="steps center_item highlight">1</a>
-  <a href="" class="steps center_item">2</a>
-  <a href="" class="steps center_item">3</a>
-</div></div>
-<div class="center_item">
-<div class="container" style="padding: 5%;">
-  <form action="" method="post">
+    {% if sponsor %}
+
     <div class="mb-3">
-      <label for="username_html" class="form-label">Username</label>
-      <input type="text" class="form-control" name="username_html" />
-    </div>
-    <div class="mb-3">
-      <label for="password_html" class="form-label">Password</label>
-      <input type="password" class="form-control" name="password_html" />
-    </div>
-    <div class="mb-3">
-      <label for="confirm_pwd_html" class="form-label">Confirm Password</label>
+      <label for="confirm_pwd_html" class="form-label">Industry</label>
       <input type="password" class="form-control" name="confirm_pwd_html" />
     </div>
-    <div>
-      <div class="form-check">
-        <input class="form-check-input" type="radio" name="radio_2" id="" />
-        <label class="form-check-label" for=""> Sponsor </label>
-      </div>
-      <div class="form-check">
-        <input class="form-check-input" type="radio" name="radio_2"id=""/>
-        <label class="form-check-label" for=""> Influencer </label>
-      </div>
-      
-    </div>
+
+
+    {% endif %}
     <div class="center_item">
         <button type="submit" class="btn btn-primary">Next -></button>
     </div>
@@ -113,50 +45,5 @@
 </div>
 <br>
 </div>
-{% elif step_two_influencer %}
-{% else %}
-<h1 class="center_item">{{userRole}} Registration</h1>
-<div class="center_item">
-<div class="steps-container">
-  <div style="height:0; width:100%; border: 2px solid rgb(155, 38, 155); margin:24px"></div>
-  <a href="" class="steps center_item highlight">1</a>
-  <a href="" class="steps center_item">2</a>
-  <a href="" class="steps center_item">3</a>
-</div></div>
-<div class="center_item">
-<div class="container" style="padding: 5%;">
-  <form action="" method="post">
-    <div class="mb-3">
-      <label for="username_html" class="form-label">Username</label>
-      <input type="text" class="form-control" name="username_html" />
-    </div>
-    <div class="mb-3">
-      <label for="password_html" class="form-label">Password</label>
-      <input type="password" class="form-control" name="password_html" />
-    </div>
-    <div class="mb-3">
-      <label for="confirm_pwd_html" class="form-label">Confirm Password</label>
-      <input type="password" class="form-control" name="confirm_pwd_html" />
-    </div>
-    <div>
-      <div class="form-check">
-        <input class="form-check-input" type="radio" name="role" value="sponsor" />
-        <label class="form-check-label" for=""> Sponsor </label>
-      </div>
-      <div class="form-check">
-        <input class="form-check-input" type="radio" name="role" value="influencer"/>
-        <label class="form-check-label" for=""> Influencer </label>
-      </div>
-      
-    </div>
-    <div class="center_item">
-        <button type="submit" class="btn btn-primary">Next -></button>
-    </div>
-  </form>
-</div>
-<br>
-</div>
-  
-{% endif %}
 
 {% endblock %}

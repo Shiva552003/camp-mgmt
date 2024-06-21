@@ -1,5 +1,16 @@
 {% extends 'layout.html' %}
 {% block content %}
+<style>
+  .cust_bg{
+    background: url('static/login_bg.png') no-repeat;
+    background-size: contain;
+    width: 90vw;
+    height: 100vh;
+    margin-left: 0;
+  }
+
+</style>
+<div class="cust_bg">
 <div class="container" style="width: fit-content"><h1>Campaign Management Platform</h1></div>
     <div class="center_item">
     <div class="container" style="padding: 5%;">
@@ -20,4 +31,5 @@
     <br>
     </div>
 <a href="/register" class="center_item">New User? Register</a>
+</div>
 {% endblock %}
