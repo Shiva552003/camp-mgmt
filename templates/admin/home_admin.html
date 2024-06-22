@@ -1,0 +1,72 @@
+{% extends 'layout_inner.html' %}
+{% block content %}
+<style>
+    .heading{
+        font-weight: bolder;
+        color: #5DAEF8;
+        font-style: italic;
+    }
+    h1{
+        margin-top: 10vh;
+        font-weight: bolder;
+    }
+</style>
+<div class="container">
+    <h1>Hello <span class="heading">{{user}}</span>!!</h1>
+    <br>
+    <div class="live_campaigns">
+        <div class="card">
+            <div class="card-header">Live Campaigns</div>
+            <div class="card-body">
+              <h5 class="card-title">Special title treatment</h5>
+              <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+              <a href="#" class="btn" style="color: black;">Go somewhere</a>
+            </div>
+            <div class="card-footer">
+                <form action="">
+                    <button class="btn" type="submit">
+                        View All <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                    </button>
+                </form>
+            </div>
+          </div>
+    </div>
+    <br>
+    <div class="Recently ">
+        <div class="card">
+            <div class="card-header">Recently flagged Users</div>
+            <div class="card-body">
+              <h5 class="card-title">Special title treatment</h5>
+              <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+              <a href="#" class="btn" style="color: black;">Go somewhere</a>
+            </div>
+            <div class="card-footer">
+                <form action="">
+                    <button class="btn" type="submit">
+                        View All <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                    </button>
+                </form>
+            </div>
+          </div>
+    </div>
+    <br>
+    <div class="live_campaigns">
+        <div class="card">
+            <div class="card-header">Recently flagged Campaigns</div>
+            <div class="card-body">
+              <h5 class="card-title">Special title treatment</h5>
+              <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+              <a href="#" class="btn" style="color: black;">Go somewhere</a>
+            </div>
+            <div class="card-footer">
+                <form action="">
+                    <button class="btn" type="submit">
+                        View All <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                    </button>
+                </form>
+            </div>
+          </div>
+    </div>
+</div>
+
+{% endblock %}

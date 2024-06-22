@@ -23,3 +23,17 @@ def login_required(func):
 # they can also take, arguments like  def wrapper(*args, **kwagrgs)
 # *args ->takes any no.of inputs ,all as an array
 # **kwargs -> takes any no of inputs, all as key value pair (dictionary)
+
+
+def admin_required(func):
+    @wraps(func)
+    def wrapper():
+        if 'username' not in session or 'role' not in session:
+            flash("You need to login first","danger")
+            return redirect(url_for('login'))
+        user = User.query.filter_by(username=session['username']).first()
+        if not user:
+            session.clear()
+            return redirect(url_for('login'))
+        return func()
+    return wrapper

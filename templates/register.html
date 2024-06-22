@@ -8,26 +8,27 @@
   <form action="" method="post">
     <div class="mb-3">
       <label for="username_html" class="form-label">Username</label>
-      <input type="text" class="form-control" name="username_html" />
+      <input type="text" class="form-control" name="username_html" value="{{username}}" />
     </div>
     <div class="mb-3">
       <label for="password_html" class="form-label">Password</label>
-      <input type="password" class="form-control" name="password_html" />
+      <input type="password" class="form-control" name="password_html" value="{{password}}"/>
     </div>
     <div class="mb-3">
       <label for="confirm_pwd_html" class="form-label">Confirm Password</label>
-      <input type="password" class="form-control" name="confirm_pwd_html" />
+      <input type="password" class="form-control" name="confirm_pwd_html" value="{{confirm_pwd}}"/>
     </div>
     <div>
       <div class="form-check">
-        <input class="form-check-input" type="radio" name="radio_2" id="" />
-        <label class="form-check-label" for=""> Sponsor </label>
+        <input class="form-check-input" type="radio" name="role" id="sponsor" value="sponsor"
+        {% if role == 'sponsor' %}checked{% endif %}>
+        <label class="form-check-label" for="sponsor"> Sponsor </label>
       </div>
       <div class="form-check">
-        <input class="form-check-input" type="radio" name="radio_2"id=""/>
-        <label class="form-check-label" for=""> Influencer </label>
+        <input class="form-check-input" type="radio" name="role" id="influencer" value="influencer"
+        {% if role == 'influencer' %}checked{% endif %} />
+        <label class="form-check-label" for="influencer"> Influencer </label>
       </div>
-      
     </div>
     {% if sponsor %}
 
