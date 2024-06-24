@@ -5,8 +5,21 @@
 }
 .btn {
   background-color: #5daef8;
+  border: 2px solid #5daef8;
 }
-
+.btn:hover{
+  background-color: white;
+  border: 2px solid #2489E7;
+}
+.btn_red{
+    background-color: #fcbdbd98;
+    border: 2px solid #fb3333;
+    color:#fb3333
+}
+.btn_red:hover{
+    background-color: #fb3333;
+    color:white;
+}
 html,
 body {
   font-family: "Josefin Sans", sans-serif;
@@ -34,23 +47,31 @@ a.nav-link {
     color: black !important;
     background-color: transparent;
   }
-li.disabled:hover{
-    background-color: rgb(197, 195, 195) !important;
-    border-radius:15px;
-}
-li.btn_active{
-    background-color: rgb(255, 255, 255) !important;
-    border: 2px solid #5daef8 !important;
-    border-radius:15px;
-}
-li.btn_active:hover{
-    background-color: rgb(255, 255, 255) !important;
-    border: 2px solid #5daef8 !important;
-    font-weight: bolder;
-}
 .theme-bgcolor {
     background-color: #5daef8;
 }
 .theme-color {
     color: #5daef8;
+}
+
+.cust_card{
+    border: 1px solid rgba(0, 0, 0, 0.614);
+    border-radius: 10px;
+    padding: 10px;
+    display: flex !important;
+    flex-direction: row;
+    width: 100% !important;
+    margin: 5px 0 8px 0
+}
+.cust_card_body{
+    flex-grow: 1;
+}
+.cust_card_body_right{
+    margin-left:auto
+}
+
+.heading{
+    font-weight: bolder;
+    color: #5DAEF8;
+    font-style: italic;
 }

@@ -1,4 +1,52 @@
 {% extends 'layout_inner.html' %}
 {% block content %}
-this is spon hafdsj dashboard.
+<style>
+    .top-half{
+        border:2px solid black;
+        display: flex;
+    }
+    .icon{
+        width: 20%
+    }
+    .details{
+        flex-grow: 1;
+    }
+    li{
+        list-style-type: none;
+    }
+</style>
+<div class="container">
+    <h1 style="text-decoration: underline;">Welcome <span class="heading">{{user}}</span></h1>
+    <div class="top-half">
+        <div class="icon">
+            <h1>icon</h1>
+        </div>
+        <div class="details">
+            <ul>
+                <li>Name: {{user.name}}</li>
+                <li>Desc: {{user.desc}}</li>
+                <li>Company Name: {{user.company_name}}</li>
+                <li>Name: {{user.name}}</li>
+            </ul>
+        </div>
+    </div>
+
+<!-- <div class="recently-flagged">
+    <div class="card">
+        <div class="card-header">Recently flagged Users</div>
+        <div class="card-body">
+          <h5 class="card-title">Special title treatment</h5>
+          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+          <a href="#" class="btn" style="color: black;">Go somewhere</a>
+        </div>
+        <div class="card-footer">
+            <form action="">
+                <button class="btn" type="submit">
+                    View All <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                </button>
+            </form>
+        </div>
+      </div>
+</div> -->
+</div>
 {% endblock %}

@@ -1,6 +1,7 @@
 from functools import wraps
 from flask import session,flash,redirect,url_for
 from model import User
+user=''
 
 # decorator
 def login_required(func):
@@ -9,12 +10,16 @@ def login_required(func):
         if 'username' not in session:
             flash("You need to login first","danger")
             return redirect(url_for('login'))
-        user = User.query.filter_by(username=session['username']).first()
+        retrieve_user()
         if not user:
             session.clear()
             return redirect(url_for('login'))
         return func()
     return wrapper
+
+def retrieve_user():
+    global user
+    user = User.query.filter_by(username=session['username']).first()
 
 
 #these are called wrapper functions
@@ -24,16 +29,13 @@ def login_required(func):
 # *args ->takes any no.of inputs ,all as an array
 # **kwargs -> takes any no of inputs, all as key value pair (dictionary)
 
-
 def admin_required(func):
     @wraps(func)
+    @login_required
     def wrapper():
-        if 'username' not in session or 'role' not in session:
-            flash("You need to login first","danger")
-            return redirect(url_for('login'))
-        user = User.query.filter_by(username=session['username']).first()
-        if not user:
+        if user.username != session['username'] or user.role != session['role'] or user.role != 'admin':
             session.clear()
+            flash("Not authorized","danger")
             return redirect(url_for('login'))
         return func()
     return wrapper

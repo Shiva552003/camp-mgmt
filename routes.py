@@ -28,8 +28,6 @@ def login_Post():
   username=request.form.get('username_html')
   password=request.form.get('password_html')
 
-  print("from html",password)
-
   user=User.query.filter_by(username=username).first()
   if not user or not check_password_hash(user.password,password):
     flash("Username or password is incorrect, Please try again","danger")

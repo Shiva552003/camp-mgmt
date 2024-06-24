@@ -14,8 +14,8 @@ class User(db.Model):
     is_admin = db.Column(db.Boolean, nullable=False, default = False)
 
 class Campaign(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(80), nullable=False)
+    id = db.Column(db.Integer, primary_key=True,autoincrement=True)
+    name = db.Column(db.String(80), nullable=False,)
     budget = db.Column(db.Integer, nullable=False)
     description = db.Column(db.String(255))
     category = db.Column(db.String(50))
@@ -28,7 +28,7 @@ class Campaign(db.Model):
     #  db.relationship ('class name', backref='attribute not the class' , lazy: fetches data only when asked for, cascade = 'deleted a category ? delete its products as well')
 
 class Ad(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True,autoincrement=True)
     ad_name = db.Column(db.String(80), nullable=False)
     ad_description = db.Column(db.String(255))
     ad_status = db.Column(db.String(20))
@@ -39,9 +39,9 @@ class Ad(db.Model):
 
 with app.app_context():
     db.create_all()
-    admin=User.query.filter_by(is_admin=True).first()
+    admin=User.query.filter_by(role="admin").first()
     if not admin:
-      obj = User(id = "1",username = "admin",password = generate_password_hash("admin123"), company_name = "ADMIN",role="admin" , is_admin=True)
+      obj = User(id = "1",username = "admin",password = generate_password_hash("admin123"), company_name = "ADMIN",role="admin")
       db.session.add(obj)
       db.session.commit()
 

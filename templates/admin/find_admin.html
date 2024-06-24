@@ -1,0 +1,79 @@
+{% extends 'layout_inner.html' %}
+{% block content %}
+<script>
+    $(document).ready(function() {
+        $("#openDialogBtn").click(function() {
+            $("#dialogBox").fadeIn(); // Show dialog box
+        });
+        $("#closeDialogBtn").click(function() {
+            $("#dialogBox").fadeOut(); // Hide dialog box
+        });
+
+        $("#reloadPageBtn").click(function() {
+            window.location.href = "/find?new_input=value";
+        });
+    });
+</script>
+<style>
+    .dialog-box {
+        display: none; /* Initially hide dialog box */
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #fff;
+        padding: 20px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        z-index: 1000; /* Ensure dialog is above other content */
+    }
+
+
+</style>
+
+<div class="container">
+    <h1>Find Page</h1>
+    <button id="openDialogBtn" class="btn btn-primary">Open Dialog</button>
+</div>
+
+<!-- Dialog box -->
+<div id="dialogBox" class="dialog-box">
+    <h2>Dialog Box Content</h2>
+    <p>This is a sample dialog box content.</p>
+    <button id="reloadPageBtn" class="btn btn-secondary">Reload Page with New Inputs</button>
+    <button id="closeDialogBtn" class="btn btn-secondary">Close</button>
+</div>
+
+<div class="container">
+    <nav class="navbar" style="margin: 5px 0 5px 0;">
+        <form action="searchAll" class="form-inline w-100">
+            <div class="input-group w-100">
+                <input class="form-control" type="search" placeholder="Search for Sponsors or Influencers" aria-label="Search"
+                style="border-radius: 15px;"
+                 name="searchAll" >
+                <div class="input-group-append">
+                    <button class="btn text-dark" type="submit"><i class="fa fa-search" aria-hidden="true"></i> Search</button>
+                </div>
+            </div>
+        </form>
+    </nav>
+    <div class="row center_item" style="margin: 5% 0 2% 0;">
+        <h3 class="col-9">Sponsors: </h3>
+        <a href="#" class="btn col-2">View All <i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+    </div>
+
+    {% for spon in sponsors %}
+
+    <div class="cust_card">
+        <div class="cust_card_body" style="width: 50%;">
+            <h4 class="card-title">{{spon.username}}</h4>
+            <p class="card-text">{{spon.role}}</p>
+        </div>
+        <div class="cust_card_body_right center-item">
+            <a href="" class="btn">View <i class="fa fa-list" aria-hidden="true"></i></a>
+            <a href="#" class="btn btn_red">Flag <i class="fa fa-flag" aria-hidden="true"></i></a>
+        </div>
+    </div>
+        
+    {% endfor %}
+</div>
+{% endblock %}
