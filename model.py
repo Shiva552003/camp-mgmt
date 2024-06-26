@@ -23,7 +23,7 @@ class Sponsor(db.Model):
     desc = db.Column(db.String(256), nullable=True)
     is_flagged = db.Column(db.Boolean, default=False)
     is_verified = db.Column(db.Boolean, default=False)
-    cover_photo = db.Column(db.LargeBinary, nullable=False)
+    cover_photo = db.Column(db.LargeBinary, nullable=True)
     amt_spent = db.Column(db.Integer, default=0)
 
     campaigns = db.relationship('Campaign', backref='sponsor', lazy=True, cascade='all, delete-orphan')
@@ -32,6 +32,7 @@ class Sponsor(db.Model):
 
 class Influencer(db.Model):
     id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
+    name = db.Column(db.String(20), unique=False, nullable=True)
     desc = db.Column(db.String(256))
     industry = db.Column(db.String(40))
     niche = db.Column(db.String(40))

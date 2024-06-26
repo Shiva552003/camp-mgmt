@@ -1,10 +1,12 @@
 from flask import render_template,session
 from main import app
+from model import Sponsor
 
 
 @app.route('/home/sponsor')
 def spon_home():
-    return render_template('sponsor/home_spon.html', active='home', user=session['username'])
+    spon=Sponsor.query.filter_by()
+    return render_template('sponsor/home_spon.html', active='home', spon=session['username'])
 
 @app.route('/find/sponsor')
 def spon_find():

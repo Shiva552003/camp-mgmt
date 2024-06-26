@@ -75,3 +75,7 @@ a.nav-link {
     color: #5DAEF8;
     font-style: italic;
 }
+.required::after{
+    content: '*';
+    color: #fb3333;
+}

@@ -1,0 +1,121 @@
+{% extends 'layout.html' %}
+{% block content %}
+<style>
+    .social_id_info{
+        display: flex;
+        gap:1rem;
+        color: white;
+    }
+    .insta,.youtube,.x{
+        height: 55vh;
+        width: 38vh;
+        border-radius: 10px;
+        padding: 15px;
+    }
+    .header>img{
+        width: 5vw;
+        height: 7vh;
+        margin-bottom: 1rem;
+    }
+    .youtube{
+        background: linear-gradient(to top left, rgb(248, 131, 131), rgb(250, 65, 65));
+    }
+    .insta{
+        background: linear-gradient(to bottom left, rgba(255, 251, 26, 0.9), rgb(195, 32, 32,0.9), rgb(199, 10, 241,0.9));
+    }
+    .x{
+        background: linear-gradient(to bottom , rgb(0, 0, 0), rgb(119, 119, 119));
+    }
+
+</style>
+<h1 class="center_item">Influencer Registration</h1>
+<div class="center_item">
+<div class="container" style="padding: 5%;">
+  <form action="" method="post" enctype="multipart/form-data">
+    <div class="mb-3">
+      <label for="name_html" class="form-label required">Name</label>
+      <input type="text" class="form-control" name="name_html" value="{{details.name}}" />
+  </div>
+  
+  <div class="mb-3">
+      <label for="desc_html" class="form-label">Description</label>
+      <input type="text" class="form-control" name="desc_html" value="{{details.desc}}" />
+  </div>
+  
+  <div class="mb-3">
+      <label for="industry_html" class="form-label required">Industry</label>
+      <input type="text" class="form-control" name="industry_html" value="{{details.industry}}" />
+  </div>
+  
+  <div class="mb-3">
+      <label for="niche_html" class="form-label">Niche</label>
+      <input type="text" class="form-control" name="niche_html" value="{{details.niche}}" />
+  </div>
+  
+  <div class="mb-3">
+      <label for="cover_photo_html" class="form-label">Cover Photo</label>
+      <input type="file" class="form-control" name="cover_photo_html" />
+  </div>
+  <div class="social_id_info center_item">
+    <div class="insta">
+        <div class="header center_item">
+            <img src="https://cdn.pixabay.com/photo/2021/06/15/12/14/instagram-6338393_1280.png" alt="icon">
+        </div>
+        <div class="mb-3">
+            <label for="insta_id_html" class="form-label">Instagram ID</label>
+            <input type="text" class="form-control" name="insta_id_html" value="{{details.insta_id}}" />
+        </div>
+        
+        <div class="mb-3">
+            <label for="insta_followers_html" class="form-label">Instagram Followers</label>
+            <input type="text" class="form-control" name="insta_followers_html" value="{{details.insta_followers}}" />
+        </div>
+    </div>
+
+    <div class="youtube">
+        <div class="header center_item">
+            <img src="https://cdn.pixabay.com/photo/2016/11/19/03/08/youtube-1837872_1280.png" alt="icon">
+        </div>
+        <div class="mb-3">
+            <label for="youtube_id_html" class="form-label">YouTube ID</label>
+            <input type="text" class="form-control" name="youtube_id_html" value="{{details.youtube_id}}" />
+        </div>
+        
+        <div class="mb-3">
+            <label for="youtube_channel_html" class="form-label">YouTube Channel</label>
+            <input type="text" class="form-control" name="youtube_channel_html" value="{{details.youtube_channel}}" />
+        </div>
+        
+        <div class="mb-3">
+            <label for="youtube_followers_html" class="form-label">YouTube Followers</label>
+            <input type="text" class="form-control" name="youtube_followers_html" value="{{details.youtube_followers}}" />
+        </div>
+    </div>
+    <div class="x">
+        <div class="header center_item">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/5/5a/X_icon_2.svg" alt="icon">
+        </div>
+        <div class="mb-3">
+            <label for="x_id_html" class="form-label">X ID</label>
+            <input type="text" class="form-control" name="x_id_html" value="{{details.x_id}}" />
+        </div>
+        
+        <div class="mb-3">
+            <label for="x_name_html" class="form-label">X Name</label>
+            <input type="text" class="form-control" name="x_name_html" value="{{details.x_name}}" />
+        </div>
+        
+        <div class="mb-3">
+            <label for="x_followers_html" class="form-label">X Followers</label>
+            <input type="text" class="form-control" name="x_followers_html" value="{{details.x_followers}}" />
+        </div>
+    </div>
+    </div>
+    <div class="center_item" style="margin-top: 2rem;">
+        <button type="submit" class="btn btn-primary submit_btn">Submit</button>
+    </div>
+  </form>
+</div>
+</div>
+
+{% endblock %}
