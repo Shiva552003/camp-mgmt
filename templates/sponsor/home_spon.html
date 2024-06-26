@@ -1,12 +1,21 @@
 {% extends 'layout_inner.html' %}
 {% block content %}
 <style>
-    .top-half{
-        border:2px solid black;
+    .short_info{
+        border:1px solid rgba(0, 0, 0, 0.563);
         display: flex;
+        border-radius: 15px;
+        height:20vh;
+        padding: 10px;
     }
     .icon{
-        width: 20%
+        width: 20%;
+        height: 100%;
+    }
+    .icon>img{
+        width: 60%;
+        height: 100%;
+        border-radius: 50%;
     }
     .details{
         flex-grow: 1;
@@ -16,37 +25,62 @@
     }
 </style>
 <div class="container">
-    <h1 style="text-decoration: underline;">Welcome <span class="heading">{{user}}</span></h1>
-    <div class="top-half">
-        <div class="icon">
-            <h1>icon</h1>
+    <h1 style="text-decoration: underline;">Welcome <span class="heading">{{spon.name}}</span></h1>
+    {% if viewMore %}
+    {% else %}
+    <div class="short_info">
+        <div class="icon center_item">
+            <img src="{{cover_photo}}" alt="Cover Photo">
         </div>
         <div class="details">
             <ul>
                 <li>Name: {{spon.name}}</li>
                 <li>Desc: {{spon.desc}}</li>
                 <li>Company Name: {{spon.company_name}}</li>
-                <li>Name: {{user.name}}</li>
             </ul>
         </div>
-    </div>
-
-<!-- <div class="recently-flagged">
-    <div class="card">
-        <div class="card-header">Recently flagged Users</div>
-        <div class="card-body">
-          <h5 class="card-title">Special title treatment</h5>
-          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-          <a href="#" class="btn" style="color: black;">Go somewhere</a>
-        </div>
-        <div class="card-footer">
-            <form action="">
-                <button class="btn" type="submit">
-                    View All <i class="fa fa-arrow-right" aria-hidden="true"></i>
-                </button>
+        <div><form action="view_details">
+                <button type="submit" class="btn submit_btn">View all details</button>
             </form>
         </div>
-      </div>
-</div> -->
+    </div>
+        
+    {% endif %}
+    <br>
+    <div class="live_campaigns card_set">
+        <div class="title_n_view">
+            <h3>Live Campaigns:</h3>
+            <a href="" class="btn">View All <i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+        </div>
+        {% for camp in campaigns %}
+        <div class="cust_card">
+            <div class="cust_card_body" style="width: 50%;">
+                <h4 class="card-title">{{camp.username}}</h4>
+                <p class="card-text">{{camp.role}}</p>
+            </div>
+            <div class="cust_card_body_right center-item">
+                <a href="" class="btn">View <i class="fa fa-list" aria-hidden="true"></i></a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <br>
+    <div class="recently-flagged">
+        <div class="card">
+            <div class="card-header">Recently flagged Users</div>
+            <div class="card-body">
+            <h5 class="card-title">Special title treatment</h5>
+            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+            <a href="#" class="btn" style="color: black;">Go somewhere</a>
+            </div>
+            <div class="card-footer">
+                <form action="">
+                    <button class="btn" type="submit">
+                        View All <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}

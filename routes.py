@@ -18,6 +18,7 @@ def login_Post():
     flash("Username or password is incorrect, Please try again","danger")
     return redirect(url_for('login'))
   else:
+    session['userId']=user.id
     session['username'] = username
     session['role']=user.role
     return redirect(url_for('home'))
@@ -188,6 +189,48 @@ def home():
          return redirect(url_for('influ_home'))
       if session['role']=='sponsor':
          return redirect(url_for('spon_home'))
+   else:
+      flash('User not logged in',"danger")
+      return redirect(url_for('login'))
+
+@app.route('/campaigns')
+@login_required
+def campaigns():
+   if 'username' in session and 'role' in session:
+      if session['role']=='admin':
+         return redirect(url_for('admin_campaigns'))
+      if session['role']=='influencer':
+         return redirect(url_for('influ_campaigns'))
+      if session['role']=='sponsor':
+         return redirect(url_for('spon_campaigns'))
+   else:
+      flash('User not logged in',"danger")
+      return redirect(url_for('login'))
+
+@app.route('/find')
+@login_required
+def find():
+   if 'username' in session and 'role' in session:
+      if session['role']=='admin':
+         return redirect(url_for('admin_find'))
+      if session['role']=='influencer':
+         return redirect(url_for('influ_find'))
+      if session['role']=='sponsor':
+         return redirect(url_for('spon_find'))
+   else:
+      flash('User not logged in',"danger")
+      return redirect(url_for('login'))
+
+@app.route('/stats')
+@login_required
+def stats():
+   if 'username' in session and 'role' in session:
+      if session['role']=='admin':
+         return redirect(url_for('admin_stats'))
+      if session['role']=='influencer':
+         return redirect(url_for('influ_stats'))
+      if session['role']=='sponsor':
+         return redirect(url_for('spon_stats'))
    else:
       flash('User not logged in',"danger")
       return redirect(url_for('login'))

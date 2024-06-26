@@ -9,7 +9,12 @@ from main import app
 def admin_home():
     return render_template('admin/home_admin.html', active='home',user=session['username'])
 
-@app.route('/find')
+@app.route('/campaignsAll')
+@admin_required
+def admin_campaigns():
+    return render_template('admin/campaigns.html', active='find')
+
+@app.route('/findAll')
 @admin_required
 def admin_find():
     sponsors=User.query.filter_by(role="sponsor").all()
@@ -17,7 +22,7 @@ def admin_find():
 
     return render_template('admin/find_admin.html', active='find',sponsors=sponsors,influencers=influencers)
 
-@app.route('/stats')
+@app.route('/statsAll')
 @admin_required
 def admin_stats():
-    return render_template('stats.html', active='stats')
+    return render_template('admin/stats.html', active='stats')

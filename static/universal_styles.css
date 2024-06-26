@@ -53,6 +53,15 @@ a.nav-link {
 .theme-color {
     color: #5daef8;
 }
+.heading{
+  font-weight: bolder;
+  color: #5DAEF8;
+  font-style: italic;
+}
+.required::after{
+  content: '*';
+  color: #fb3333;
+}
 
 .cust_card{
     border: 1px solid rgba(0, 0, 0, 0.614);
@@ -70,12 +79,18 @@ a.nav-link {
     margin-left:auto
 }
 
-.heading{
-    font-weight: bolder;
-    color: #5DAEF8;
-    font-style: italic;
+.title_n_view{
+  display: flex;
+  padding: 3px;
+  border-radius: 5px;
 }
-.required::after{
-    content: '*';
-    color: #fb3333;
+.title_n_view>h3{
+  flex-grow: 1;
+}
+.card_set{
+  border: 1px solid rgba(0, 0, 0, 0.495) ;
+  border-radius: 10px;
+}
+.card_set > .cust_card:nth-child(2n){
+  background-color: #5dadf867;
 }

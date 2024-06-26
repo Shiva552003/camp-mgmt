@@ -39,3 +39,25 @@ def admin_required(func):
             return redirect(url_for('login'))
         return func()
     return wrapper
+
+def sponsor_required(func):
+    @wraps(func)
+    @login_required
+    def wrapper():
+        if user.username != session['username'] or user.role != session['role'] or user.role != 'sponsor':
+            session.clear()
+            flash("Not authorized","danger")
+            return redirect(url_for('login'))
+        return func()
+    return wrapper
+
+def influencer_required(func):
+    @wraps(func)
+    @login_required
+    def wrapper():
+        if user.username != session['username'] or user.role != session['role'] or user.role != 'influencer':
+            session.clear()
+            flash("Not authorized","danger")
+            return redirect(url_for('login'))
+        return func()
+    return wrapper
