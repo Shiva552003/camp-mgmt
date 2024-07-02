@@ -1,0 +1,55 @@
+{% extends 'layout_inner.html' %}
+{% block content %}
+<div class="container">
+    <h1>Add <span class="heading">Campaign</span></h1>
+    <form action="" method="post" enctype="multipart/form-data">
+        <div class="mb-3">
+            <label for="name_html" class="form-label required">Name</label>
+            <input type="text" placeholder="Give a name to Campaign" class="form-control" name="name_html" value="{{camp.name}}" />
+        </div>
+
+        <div class="mb-3">
+            <label for="budget_html" class="form-label required">Budget</label>
+            <input type="number" placeholder="Give your budget for the project" class="form-control" name="budget_html" value="{{camp.budget}}" />
+        </div>
+
+        <div class="mb-3">
+            <label for="description_html" class="form-label">Description</label>
+            <input type="text" class="form-control" placeholder="Description" name="desc_html" value="{{camp.description}}" />
+        </div>
+
+        <div class="mb-3">
+            <label for="category_html" class="form-label required">Industry</label>
+            <input type="text" class="form-control" placeholder="Give the Industry" name="industry_html" value="{{camp.category}}" />
+        </div>
+        <div style="display: flex; gap:2rem;">
+            <div class="mb-3">
+                <label for="start_date_html" class="form-label required">Start Date</label>
+                <input type="date" placeholder="Choose a stating date" class="form-control" name="start_date_html" value="{{camp.start_date}}" />
+            </div>
+            
+            <div class="mb-3">
+                <label for="end_date_html" class="form-label">End Date</label>
+                <input type="date" placeholder="Estimated end date" class="form-control" name="end_date_html" value="{{camp.end_date}}" />
+            </div>
+            
+            <div class="mb-3">
+                <label for="goal_users_html" class="form-label">Goal Users</label>
+                <input type="text" class="form-control" placeholder="Goal of new users" name="goal_users_html" value="{{camp.goal_users}}" />
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="goal_users_html" class="form-label" >Select Visibility</label>
+            <select class="form-select" name="visibility" aria-label="Select Visibility">
+                <option selected value='public'>Public</option>
+                <option value='private'>Private</option>
+              </select>
+        </div>
+            
+        <div class="center_item" style="margin-top: 2rem;">
+            <button type="submit" class="btn submit_btn">Create</button>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

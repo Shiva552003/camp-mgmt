@@ -55,8 +55,8 @@
         {% for camp in campaigns %}
         <div class="cust_card">
             <div class="cust_card_body" style="width: 50%;">
-                <h4 class="card-title">{{camp.username}}</h4>
-                <p class="card-text">{{camp.role}}</p>
+                <h4 class="card-title">{{camp.name}}</h4>
+                <p class="card-text">{{camp.budget}}</p>
             </div>
             <div class="cust_card_body_right center-item">
                 <a href="" class="btn">View <i class="fa fa-list" aria-hidden="true"></i></a>
@@ -65,22 +65,21 @@
         {% endfor %}
     </div>
     <br>
-    <div class="recently-flagged">
-        <div class="card">
-            <div class="card-header">Recently flagged Users</div>
-            <div class="card-body">
-            <h5 class="card-title">Special title treatment</h5>
-            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-            <a href="#" class="btn" style="color: black;">Go somewhere</a>
+    <div class="new_requests card_set">
+        <div class="title_n_view">
+            <h3>New Ad Requests:</h3>
+            <a href="" class="btn">View All <i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+        </div>
+        {% for req in requests %}
+        <div class="cust_card">
+            <div class="cust_card_body" style="width: 50%;">
+                <h4 class="card-title">{{req.name}}</h4>
+                <p class="card-text">{{req.comments}}</p>
             </div>
-            <div class="card-footer">
-                <form action="">
-                    <button class="btn" type="submit">
-                        View All <i class="fa fa-arrow-right" aria-hidden="true"></i>
-                    </button>
-                </form>
+            <div class="cust_card_body_right center-item">
+                <a href="" class="btn">View <i class="fa fa-list" aria-hidden="true"></i></a>
             </div>
         </div>
-    </div>
+        {% endfor %}
 </div>
 {% endblock %}

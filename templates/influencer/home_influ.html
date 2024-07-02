@@ -1,4 +1,82 @@
 {% extends 'layout_inner.html' %}
 {% block content %}
-this is influ dashboard.
+<style>
+    .profile{
+        width: 30%;
+    }
+</style>
+<div class="container">
+    <div style="display: flex; height: 200px;">
+        <div class="profile" >
+            <img src="{{cover_photo}}" alt="Cover Photo">
+            <br>
+            <br>
+            <h4>{{influ.name}}</h4>
+            <h5>{{influ.desc}}</h5>
+            <div class="rating">
+                <div class="progress">
+                    <div class="progress-bar  bg-${2|success,info,success,warning,wardanger}}" role="progressbar" style="width: 25%;"
+                        aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" ${6| ,progress-bar-animated}>Description</div>
+                </div>
+            </div>
+            
+        </div>
+        <div class="live-campaigns">
+            
+        </div>
+    </div>
+    <hr>
+    <div class="campaigns">
+        <div class="title_n_view">
+            <h3>Live Campaigns:</h3>
+            <a href="" class="btn">View All <i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+        </div>
+        {% for camp in live_campaigns %}
+        <div class="cust_card">
+            <div class="cust_card_body" style="width: 50%;">
+                <h4 class="card-title">{{camp.username}}</h4>
+                <p class="card-text">{{camp.role}}</p>
+            </div>
+            <div class="cust_card_body_right center-item">
+                <a href="" class="btn">View <i class="fa fa-list" aria-hidden="true"></i></a>
+            </div>
+        </div>
+        {% endfor %}
+        <br>
+        <br>
+        <div class="title_n_view">
+            <h3>Closed Campaigns:</h3>
+            <a href="" class="btn">View All <i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+        </div>
+        {% for camp in closed_campaigns %}
+        <div class="cust_card">
+            <div class="cust_card_body" style="width: 50%;">
+                <h4 class="card-title">{{camp.username}}</h4>
+                <p class="card-text">{{camp.role}}</p>
+            </div>
+            <div class="cust_card_body_right center-item">
+                <a href="" class="btn">View <i class="fa fa-list" aria-hidden="true"></i></a>
+            </div>
+        </div>
+        {% endfor %}
+        <br>
+        <br>
+        <div class="title_n_view">
+            <h3>Flagged Campaigns:</h3>
+            <a href="" class="btn">View All <i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+        </div>
+        {% for camp in flagged_campaigns %}
+        <div class="cust_card">
+            <div class="cust_card_body" style="width: 50%;">
+                <h4 class="card-title">{{camp.username}}</h4>
+                <p class="card-text">{{camp.role}}</p>
+            </div>
+            <div class="cust_card_body_right center-item">
+                <a href="" class="btn">View <i class="fa fa-list" aria-hidden="true"></i></a>
+            </div>
+        </div>
+        {% endfor %}
+    
+    </div>
+</div>
 {% endblock %}
