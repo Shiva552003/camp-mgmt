@@ -1,5 +1,37 @@
 {% extends 'layout_inner.html' %}
 {% block content %}
+<style>
+    .add_campaign{
+        width: 40%;
+    }
+    .add_button{
+        width: 100%;
+        height: 80%;
+        border: none;
+        color: none;
+    }
+    .add_button > img{
+        border-radius: 15px;
+        width: 80%;
+        height: 80%;
+    }
+    .info_table{
+        width:60%;
+        overflow: scroll;
+        padding-left:20px;
+    }
+    .info_table::-webkit-scrollbar {
+        width: 12px;
+        height: 12px;
+    }
+    .info_table:hover::-webkit-scrollbar-thumb {
+        background-color: #888;
+        border-radius: 10px;
+        border:2px solid #f1f1f1;
+    }
+
+
+</style>
 <br>
 <div style="display: flex; height: 200px;">
     <div class="add_campaign" >
@@ -75,9 +107,8 @@
     {% for camp in live_campaigns %}
     <div class="cust_card">
         <div class="cust_card_body" style="width: 50%;">
-            <h4 class="card-title">{{camp.name}}</h4>
-            <p class="p_label" >Budget</p>
-            <p class="card-text">{{camp.budget}}</p>
+            <h4 class="card-title">{{camp.username}}</h4>
+            <p class="card-text">{{camp.role}}</p>
         </div>
         <div class="cust_card_body_right center-item">
             <a href="" class="btn">View <i class="fa fa-list" aria-hidden="true"></i></a>
@@ -122,38 +153,4 @@
 </div>
 
 
-{% endblock %}
-{% block style %}
-<style>
-    .add_campaign{
-        width: 40%;
-    }
-    .add_button{
-        width: 100%;
-        height: 80%;
-        border: none;
-        color: none;
-    }
-    .add_button > img{
-        border-radius: 15px;
-        width: 80%;
-        height: 80%;
-    }
-    .info_table{
-        width:60%;
-        overflow: scroll;
-        padding-left:20px;
-    }
-    .info_table::-webkit-scrollbar {
-        width: 12px;
-        height: 12px;
-    }
-    .info_table:hover::-webkit-scrollbar-thumb {
-        background-color: #888;
-        border-radius: 10px;
-        border:2px solid #f1f1f1;
-    }
-
-
-</style>
 {% endblock %}

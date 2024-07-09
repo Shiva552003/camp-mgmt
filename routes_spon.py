@@ -10,6 +10,7 @@ import io
 @sponsor_required
 def spon_home():
     spon=Sponsor.query.filter_by(id=session['userId']).first()
+    print(spon.id)
     cover_photo= url_for('get_cover_photo', sponsor_id=spon.id)
 
     campaigns=Campaign.query.filter_by(spon_id=spon.id).all()
@@ -77,7 +78,7 @@ def add_campaigns_Post():
         # return redirect(url_for('spon_view_camp',camp_id=campaign.id))
         return redirect(url_for('spon_view_camp'))
 
-@app.route('/sponsor/view_campaign')
+@app.route('/sponsor/<int:camp_id>/view_campaign')
 @sponsor_required
 def spon_view_camp():
     # camp = Campaign.query.filter_by(id=camp_id).first()

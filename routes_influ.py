@@ -11,7 +11,7 @@ def influ_home():
 
     return render_template('influencer/home_influ.html', active='home',influ=influ,cover_photo=cover_photo)
 
-@app.route('/sponsor/<int:influ_id>/cover_photo')
+@app.route('/influ/<int:influ_id>/cover_photo')
 def get_cover_photo_influ(influ_id):
     influencer = Influencer.query.get_or_404(influ_id)
     if influencer.cover_photo:
@@ -26,6 +26,10 @@ def get_cover_photo_influ(influ_id):
 @app.route('/find/influencer')
 def influ_find():
     return render_template('influencer/find.html', active='find')
+
+@app.route('/campaigns/influencer')
+def influ_camp():
+    return render_template('influencer/campaign.html', active='find')
 
 @app.route('/stats/influencer')
 def influ_stats():

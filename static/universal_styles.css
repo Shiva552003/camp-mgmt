@@ -94,3 +94,11 @@ a.nav-link {
 .card_set > .cust_card:nth-child(2n){
   background-color: #79beff67;
 }
+
+.cust_border{
+  border: 2px solid black
+}
+
+.p_label{
+  color: black;
+}
