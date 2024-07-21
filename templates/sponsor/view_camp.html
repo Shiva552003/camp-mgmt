@@ -1,7 +1,69 @@
 {% extends 'layout_inner.html' %}
+{% block style %}    
+{% endblock %}
 {% block content %}
 <div class="container">
     <h1>View <span class="heading">Campaign</span></h1>
-    <h1 style="text-decoration: underline;">{{camp.name}}</h1>
+    <h3 style="text-decoration: underline; text-align: center;">{{ camp.name }}</h3>
+
+    <div class="mb-3">
+        <label for="campaign_budget" class="form-label">Budget</label>
+        <h4 id="campaign_budget">{{ camp.budget }}</h4>
+    </div>
+
+    <div class="mb-3">
+        <label for="campaign_description" class="form-label">Description</label>
+        <h4 id="campaign_description">{{ camp.description }}</h4>
+    </div>
+
+    <div class="mb-3">
+        <label for="campaign_category" class="form-label">Category</label>
+        <h4 id="campaign_category">{{ camp.category }}</h4>
+    </div>
+
+    <div class="mb-3">
+        <label for="campaign_start_date" class="form-label">Start Date</label>
+        <h4 id="campaign_start_date">{{ camp.start_date }}</h4>
+    </div>
+
+    <div class="mb-3">
+        <label for="campaign_end_date" class="form-label">End Date</label>
+        <h4 id="campaign_end_date">{{ camp.end_date }}</h4>
+    </div>
+
+    <div class="mb-3">
+        <label for="campaign_goal_users" class="form-label">Goal Users</label>
+        <h4 id="campaign_goal_users">{{ camp.goal_users }}</h4>
+    </div>
+
+    <div class="mb-3">
+        <label for="campaign_goal_users" class="form-label">Ads</label>
+        {% if ads | length == 0 %}
+            <p class="p_label">No ads to this Campaign</p>
+        {% endif %}
+        {% for ad in ads %}
+            <div class="cust_card">
+                <div class="cust_card_body" style="width: 50%;">
+                    <h4 class="card-title">{{ad.name}}</h4>
+                    <p class="p_label" >Budget</p>
+                    <p class="card-text">{{ad.budget}}</p>
+                </div>
+                <div class="cust_card_body_right center-item">
+                    <a href="{{url_for('spon_view_ad',ad_id=ad.id)}}" class="btn">View <i class="fa fa-list" aria-hidden="true"></i></a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="center_item" style="margin-bottom: 25px;">
+        <form action="{{url_for('spon_add_ad')}}">
+            <button type="submit" class="btn" style="width: 10vw">
+                Ads Ads
+                <i class="fa-solid fa-plus"></i>
+          </button>
+        </form>
+    </div>
+
 </div>
+    
 {% endblock %}

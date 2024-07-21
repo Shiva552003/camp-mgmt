@@ -1,8 +1,9 @@
 from flask import render_template,session,send_file,redirect,url_for,request,flash
+from sqlalchemy import desc
 from main import app
-from model import Ad_request, Sponsor,Campaign,db
+from model import Ad_request, Sponsor,Campaign,db,Ad,Influencer
 from wrappers import sponsor_required
-from datetime import datetime
+from datetime import datetime,date
 import io
 
 
@@ -10,10 +11,10 @@ import io
 @sponsor_required
 def spon_home():
     spon=Sponsor.query.filter_by(id=session['userId']).first()
-    print(spon.id)
     cover_photo= url_for('get_cover_photo', sponsor_id=spon.id)
+    current_date = date.today()
 
-    campaigns=Campaign.query.filter_by(spon_id=spon.id).all()
+    campaigns=Campaign.query.filter(Campaign.spon_id==spon.id,Campaign.start_date < current_date, Campaign.end_date > current_date).all()
     requests=Ad_request.query.filter_by(spon_id=spon.id).all()
 
     return render_template('sponsor/home_spon.html', active='home', spon=spon,cover_photo=cover_photo,campaigns=campaigns,requests=requests)
@@ -34,7 +35,14 @@ def get_cover_photo(sponsor_id):
 @app.route('/campaign/sponsor')
 @sponsor_required
 def spon_campaigns():
-    return render_template('sponsor/campaigns.html', active='campaigns')
+    current_date = date.today()
+    
+    spon=Sponsor.query.filter_by(id=session['userId']).first()
+    live_camp=Campaign.query.filter(Campaign.spon_id==spon.id,Campaign.start_date < current_date, Campaign.end_date > current_date).all()
+    closed_camp=Campaign.query.filter(Campaign.spon_id==spon.id, Campaign.end_date < current_date).all()
+    flagged_camp=Campaign.query.filter(Campaign.spon_id==spon.id, Campaign.is_flagged == True).all()
+
+    return render_template('sponsor/campaigns.html', active='campaigns',live_campaigns=live_camp, closed_campaigns=closed_camp, flagged_camp=flagged_camp)
 
 @app.route('/sponsor/add_campaign')
 @sponsor_required
@@ -75,14 +83,101 @@ def add_campaigns_Post():
         )
         db.session.add(campaign)
         db.session.commit()
-        # return redirect(url_for('spon_view_camp',camp_id=campaign.id))
-        return redirect(url_for('spon_view_camp'))
+        return redirect(url_for('spon_view_camp',camp_id=campaign.id))
 
-@app.route('/sponsor/<int:camp_id>/view_campaign')
+@app.route('/sponsor/view_campaign/<int:camp_id>')
 @sponsor_required
-def spon_view_camp():
-    # camp = Campaign.query.filter_by(id=camp_id).first()
-    return render_template('sponsor/view_camp.html', active='campaigns', camp={})
+def spon_view_camp(camp_id):
+    camp = Campaign.query.filter_by(id=camp_id).first()
+    ads = Ad.query.filter_by(campaign_id=camp.id).all()
+    return render_template('sponsor/view_camp.html', active='campaigns', camp=camp,ads=ads)
+
+@app.route('/sponsor/view_ad/<int:ad_id>')
+def spon_view_ad(ad_id):
+    ad = Ad.query.filter_by(id=ad_id).first()
+    return render_template('sponsor/view_camp.html', active='campaigns', ads=ad)
+
+
+@app.route('/sponsor/add_ad')
+def spon_add_ad():
+    ad={}
+    return render_template('sponsor/add_ad.html', active='campaigns',ad=ad, showInfluencers=False)
+
+@app.route('/sponsor/add_ad', methods=['POST'])
+def spon_add_ad_post():
+    name = request.form.get('name_html')
+    budget = request.form.get('budget_html')
+    platform = request.form.get('platform_html')
+    influ_name = request.form.get('search_influencerName')
+    showInfluencers = request.form.get('showInfluencers')
+    comments=request.form.get('comments_html')
+
+    ad={"name":name,"budget":budget,"platform":platform,"influencerName":influ_name,"comments":comments}
+    if platform == 'All':
+        influencers = Influencer.query.filter(
+            Influencer.name.like(f"%{influ_name}%"),
+            Influencer.is_flagged == False
+        ).all()
+    elif platform == 'instagram':
+        influencers = Influencer.query.filter(
+            Influencer.name.like(f"%{influ_name}%"),
+            Influencer.is_flagged == False,
+            Influencer.insta_followers > 0
+        ).order_by(desc(Influencer.insta_followers)).all()
+    elif platform == 'youtube':
+        influencers = Influencer.query.filter(
+            Influencer.name.like(f"%{influ_name}%"),
+            Influencer.is_flagged == False,
+            Influencer.youtube_followers > 0
+        ).order_by(desc(Influencer.youtube_followers)).all()
+    elif platform == 'x':
+        influencers = Influencer.query.filter(
+            Influencer.name.like(f"%{influ_name}%"),
+            Influencer.is_flagged == False,
+            Influencer.x_followers > 0
+        ).order_by(desc(Influencer.x_followers)).all()
+
+        
+    print("Influencers",influencers)
+    print("name",influ_name)
+    return render_template('sponsor/add_ad.html', active='campaigns',ad=ad,influencers=influencers,showInfluencers=True)
+
+app.route('/sponsor/send_request/<int:influ_id>', methods=['POST'])
+def send_ad_request(influ_id):
+    name = request.form.get('name_html')
+    budget = request.form.get('budget_html')
+    comments=request.form.get('comments_html')
+    platform = request.form.get('platform_html')
+    influ_name = request.form.get('search_influencerName')
+    showInfluencers = request.form.get('showInfluencers')
+
+    ad_req=Ad_request(
+        influ_id=influ_id,
+        spon_id=session['userId'],
+        name=name,
+        amount=budget,
+        description=comments,
+        previous_request_id=None,
+        )
+
+    db.session.add(ad_req)
+    db.session.commit()
+    return redirect(url_for('spon_view_camp',camp_id=campaign.id))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 @app.route('/find/sponsor')
 @sponsor_required

@@ -1,0 +1,72 @@
+{% extends 'layout_inner.html' %}
+{% block content %}
+<div class="container">
+    <h1>Add <span class="heading">Advertisement</span></h1>
+    <form action="" method="post" enctype="multipart/form-data">
+        <div class="mb-3">
+            <label for="name_html" class="form-label required">Ad Name</label>
+            <input type="text" placeholder="Give a name to Ad" class="form-control" name="name_html" value="{{ad.name}}" />
+        </div>
+
+        <div class="mb-3">
+            <label for="budget_html" class="form-label required">Budget</label>
+            <input type="number" placeholder="Give your budget for the Ad" class="form-control" name="budget_html" value="{{ad.budget}}" />
+        </div>
+        
+        <div class="mb-3">
+            <label for="comments_html" class="form-label">Comments</label>
+            <input type="Text" placeholder="Give any info for influencer to read" class="form-control" name="comments_html" value="{{ad.comments}}" />
+        </div>
+   
+        <div class="mb-3 selectInflu">
+            <label class="form-label">Select Influencers</label>
+            <div class="container">
+                <select class="form-select" name="platform_html" aria-label="Select Platforms" >
+                    <option hidden {{ 'selected' if not ad.platform else ''}}>Select Platform</option>
+                    <option value="All" {{ 'selected' if ad.platform == 'All' else '' }}>All</option>
+                    <option value="instagram" {{ 'selected' if ad.platform == 'instagram' else '' }}>Instagram</option>
+                    <option value="youtube" {{ 'selected' if ad.platform == 'youtube' else '' }}>Youtube</option>
+                    <option value="x" {{ 'selected' if ad.platform == 'x' else '' }}>X</option>
+                </select>
+                <br>
+                <input type="text" placeholder="Search for influencers" class="form-control" name="search_influencerName" value="{{ ad.influencerName }}" />
+                <div class="center_item">
+                    <button type="submit" class="btn" style="margin-top: 20px;">Search</button>
+                </div>
+            </div>
+        </div>
+
+        {% if (influencers | length) > 0 %}
+        {% for influ in influencers %}
+            <div class="cust_card">
+                <div class="cust_card_body" style="width: 50%;">
+                    <h4 class="card-title">{{influ.name}}</h4>
+                    <p class="p_label" >Rating</p>
+                    <p class="card-text">{{influ.rating}}</p>
+                    <p class="p_label" >Niche</p>
+                    <p class="card-text">{{influ.niche}}</p>
+                    <p class="p_label" >Total Followers</p>
+                    <p class="card-text">{{[influ.insta_followers,influ.youtube_followers,influ.x_followers] | max}}</p>
+                </div>
+                <div class="cust_card_body_right center-item">
+                    <a href="{{url_for('influ_view',influ_id=influ.id)}}" class="btn">View <i class="fa fa-list" aria-hidden="true"></i></a>
+                    <a href="{{url_for('send_ad_request',influ_id=influ.id)}}" class="btn">Send Request <i class="fa fa-envelope" aria-hidden="true"></i></a>
+                </div> 
+            </div>
+        {% endfor %}
+        {% elif showInfluencers == True %}
+            <h5>No Influencers by that name</h5>
+        {% endif %}
+    </form>
+</div>
+
+{% endblock %}
+{% block style %}
+<style>
+    .selectInflu{
+        background-color: #5dadf870;
+        padding: 5px;
+        border-radius: 5px;
+    }
+</style>
+{% endblock %}

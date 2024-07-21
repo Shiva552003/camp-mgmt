@@ -15,7 +15,7 @@
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     
     <!-- local  -->
-    <link rel="stylesheet" type="text/css" href="../static/universal_styles.css">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='universal_styles.css') }}">
     <link rel="icon" type="image/svg+xml" href="../static/icon.svg">
 
     <style>
@@ -51,7 +51,7 @@
     <nav class="navbar navbar-expand-lg" style="padding:0px;">
       <div class="grid_container">
         <a class="navbar-brand center_item" href="#" style="margin:0;">
-            <img src="../static/icon.svg" alt="Campaign Mgmt" >
+            <img src="{{ url_for('static', filename='icon.svg') }}" alt="Campaign Mgmt" >
         </a>
         <div class="collapse navbar-collapse center_item" id="navbarNavDropdown">
           <ul class="navbar-nav">

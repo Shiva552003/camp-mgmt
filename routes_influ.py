@@ -1,10 +1,12 @@
 from flask import render_template,session, url_for,redirect,send_file
 from main import app
+from wrappers import influencer_required
 from model import Influencer
 import io
 
 
 @app.route('/home/influencer')
+@influencer_required
 def influ_home():
     influ=Influencer.query.filter_by(id=session['userId']).first()
     cover_photo= url_for('get_cover_photo_influ', influ_id=influ.id)
@@ -23,14 +25,23 @@ def get_cover_photo_influ(influ_id):
     else:
         return redirect(url_for('home'))
 
+@app.route('/find/influencer/<int:influ_id>')
+@influencer_required
+def influ_view(influ_id):
+    return render_template('influencer/find.html', active='find')
+
+
 @app.route('/find/influencer')
+@influencer_required
 def influ_find():
     return render_template('influencer/find.html', active='find')
 
 @app.route('/campaigns/influencer')
+@influencer_required
 def influ_camp():
     return render_template('influencer/campaign.html', active='find')
 
 @app.route('/stats/influencer')
+@influencer_required
 def influ_stats():
     return render_template('influencer/stats.html', active='stats')

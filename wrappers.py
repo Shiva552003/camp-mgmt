@@ -6,7 +6,7 @@ user=''
 # decorator
 def login_required(func):
     @wraps(func)
-    def wrapper():
+    def wrapper(*args, **kwargs):
         if 'username' not in session:
             flash("You need to login first","danger")
             return redirect(url_for('login'))
@@ -14,7 +14,7 @@ def login_required(func):
         if not user:
             session.clear()
             return redirect(url_for('login'))
-        return func()
+        return func(*args, **kwargs)
     return wrapper
 
 def retrieve_user():
@@ -43,12 +43,12 @@ def admin_required(func):
 def sponsor_required(func):
     @wraps(func)
     @login_required
-    def wrapper():
+    def wrapper(*args, **kwargs):
         if user.username != session['username'] or user.role != session['role'] or user.role != 'sponsor':
             session.clear()
             flash("Not authorized","danger")
             return redirect(url_for('login'))
-        return func()
+        return func(*args, **kwargs)
     return wrapper
 
 def influencer_required(func):

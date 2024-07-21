@@ -80,7 +80,7 @@
             <p class="card-text">{{camp.budget}}</p>
         </div>
         <div class="cust_card_body_right center-item">
-            <a href="" class="btn">View <i class="fa fa-list" aria-hidden="true"></i></a>
+            <a href="{{url_for('spon_view_camp',camp_id=camp.id)}}" class="btn">View <i class="fa fa-list" aria-hidden="true"></i></a>
         </div>
     </div>
     {% endfor %}
@@ -93,11 +93,12 @@
     {% for camp in closed_campaigns %}
     <div class="cust_card">
         <div class="cust_card_body" style="width: 50%;">
-            <h4 class="card-title">{{camp.username}}</h4>
-            <p class="card-text">{{camp.role}}</p>
+            <h4 class="card-title">{{camp.name}}</h4>
+            <p class="p_label" >Budget</p>
+            <p class="card-text">{{camp.budget}}</p>
         </div>
         <div class="cust_card_body_right center-item">
-            <a href="" class="btn">View <i class="fa fa-list" aria-hidden="true"></i></a>
+            <a href="{{url_for('spon_view_camp',camp_id=camp.id)}}" class="btn">View <i class="fa fa-list" aria-hidden="true"></i></a>
         </div>
     </div>
     {% endfor %}
@@ -107,14 +108,14 @@
         <h3>Flagged Campaigns:</h3>
         <a href="" class="btn">View All <i class="fa fa-arrow-right" aria-hidden="true"></i></a>
     </div>
-    {% for camp in flagged_campaigns %}
+    {% for camp in flagged_camp %}
     <div class="cust_card">
         <div class="cust_card_body" style="width: 50%;">
-            <h4 class="card-title">{{camp.username}}</h4>
-            <p class="card-text">{{camp.role}}</p>
+            <h4 class="card-title">{{camp.name}}</h4>
+            <p class="card-text">{{camp.desc}}</p>
         </div>
         <div class="cust_card_body_right center-item">
-            <a href="" class="btn">View <i class="fa fa-list" aria-hidden="true"></i></a>
+            <a href="{{url_for('spon_view_camp',camp_id=camp.id)}}" class="btn">View <i class="fa fa-list" aria-hidden="true"></i></a>
         </div>
     </div>
     {% endfor %}
