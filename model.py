@@ -80,6 +80,7 @@ class Ad(db.Model):
 
 class Ad_request(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    ad_name = db.Column(db.String(80), nullable=False)
     influ_id = db.Column(db.Integer, db.ForeignKey('influencer.id'))
     spon_id = db.Column(db.Integer, db.ForeignKey('sponsor.id'))
     comments = db.Column(db.String(80), nullable=True)

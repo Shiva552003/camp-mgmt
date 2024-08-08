@@ -2,29 +2,31 @@
 {% block content %}
 <script>
     $(document).ready(function() {
-        $("#openDialogBtn").click(function() {
+        $(".openDialogBtn").click(function() {
+            var sponName = $(this).data("name");
+            var sponId = $(this).data("id");
+
+            $("#dialogBox h3").text("Are you sure about flagging " + sponName +" ?");
+            $("#confirmflag").attr("href", "/flag/" + sponId); // adding href to the a tag inside the dialog box
+
             $("#dialogBox").fadeIn(); // Show dialog box
         });
         $("#closeDialogBtn").click(function() {
             $("#dialogBox").fadeOut(); // Hide dialog box
         });
-
-        $("#reloadPageBtn").click(function() {
-            window.location.href = "/find?new_input=value";
-        });
     });
 </script>
 <style>
     .dialog-box {
-        display: none; /* Initially hide dialog box */
+        display: none;
         position: fixed;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
         background-color: #fff;
         padding: 20px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-        z-index: 1000; /* Ensure dialog is above other content */
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.434);
+        z-index: 1000;
     }
 
 
@@ -32,48 +34,61 @@
 
 <div class="container">
     <h1>Find Page</h1>
-    <button id="openDialogBtn" class="btn btn-primary">Open Dialog</button>
 </div>
 
 <!-- Dialog box -->
 <div id="dialogBox" class="dialog-box">
-    <h2>Dialog Box Content</h2>
-    <p>This is a sample dialog box content.</p>
-    <button id="reloadPageBtn" class="btn btn-secondary">Reload Page with New Inputs</button>
-    <button id="closeDialogBtn" class="btn btn-secondary">Close</button>
+    <h3>Are you sure you want to flag this user</h3>
+    <a id="confirmflag" class="btn btn_red">Confirm</a>
+    <button id="closeDialogBtn" class="btn">Close</button>
 </div>
 
 <div class="container">
     <nav class="navbar" style="margin: 5px 0 5px 0;">
-        <form action="searchAll" class="form-inline w-100">
+        <form action="{{url_for('admin_find_post')}}" method="post" class="form-inline w-100">
             <div class="input-group w-100">
-                <input class="form-control" type="search" placeholder="Search for Sponsors or Influencers" aria-label="Search"
-                style="border-radius: 15px;"
+                <input class="form-control" type="search" placeholder="Search " aria-label="Search"
+                value="{{search_query}}" style="border-radius: 15px;"
                  name="searchAll" >
+                 <select class="form-select" name="filter_html" aria-label="Filter by:" value="{{filter_option}}">
+                    <option hidden>Filter By:</option>
+                    <option value="spon">Sponsors</option>
+                    <option value="influ">Influencers</option>
+                    <option value="camps">Campaigns</option>
+                    <option value="ads">Ads</option>
+                    <option value="flag_spon">Flagged Sponsors</option>
+                    <option value="flag_influ">Flagged Influencers</option>
+                    <option value="flag_camps">Flagged Campaigns</option>
+                    <option value="flag_ads">Flagged Ads</option>
+                </select>
                 <div class="input-group-append">
                     <button class="btn text-dark" type="submit"><i class="fa fa-search" aria-hidden="true"></i> Search</button>
                 </div>
             </div>
         </form>
     </nav>
-    <div class="row center_item" style="margin: 5% 0 2% 0;">
-        <h3 class="col-9">Sponsors: </h3>
-        <a href="#" class="btn col-2">View All <i class="fa fa-arrow-right" aria-hidden="true"></i></a>
-    </div>
 
-    {% for spon in sponsors %}
+    {% for res in results %}
 
     <div class="cust_card">
         <div class="cust_card_body" style="width: 50%;">
-            <h4 class="card-title">{{spon.username}}</h4>
-            <p class="card-text">{{spon.role}}</p>
+            <h4 class="card-title">{{res.name}}</h4>
+            <p class="card-text">{{res.desc}}</p>
         </div>
         <div class="cust_card_body_right center-item">
             <a href="" class="btn">View <i class="fa fa-list" aria-hidden="true"></i></a>
-            <a href="#" class="btn btn_red">Flag <i class="fa fa-flag" aria-hidden="true"></i></a>
+            <a href="#" class="btn btn_red openDialogBtn" data-name="{{res.name}}" data-id="{{res.id}}">Flag <i class="fa fa-flag" aria-hidden="true"></i></a>
         </div>
     </div>
         
     {% endfor %}
 </div>
+{% endblock %}
+{% block style %}
+<style>
+    .form-select{
+        border-radius: 15px !important;
+        margin-left: 2px;
+    }
+</style>    
 {% endblock %}

@@ -3,21 +3,6 @@
 <div class="container">
     <h1>Add <span class="heading">Advertisement</span></h1>
     <form action="" method="post" enctype="multipart/form-data">
-        <div class="mb-3">
-            <label for="name_html" class="form-label required">Ad Name</label>
-            <input type="text" placeholder="Give a name to Ad" class="form-control" name="name_html" value="{{ad.name}}" />
-        </div>
-
-        <div class="mb-3">
-            <label for="budget_html" class="form-label required">Budget</label>
-            <input type="number" placeholder="Give your budget for the Ad" class="form-control" name="budget_html" value="{{ad.budget}}" />
-        </div>
-        
-        <div class="mb-3">
-            <label for="comments_html" class="form-label">Comments</label>
-            <input type="Text" placeholder="Give any info for influencer to read" class="form-control" name="comments_html" value="{{ad.comments}}" />
-        </div>
-   
         <div class="mb-3 selectInflu">
             <label class="form-label">Select Influencers</label>
             <div class="container">
@@ -35,6 +20,20 @@
                 </div>
             </div>
         </div>
+        <div class="mb-3">
+            <label for="name_html" class="form-label required">Ad Name</label>
+            <input type="text" placeholder="Give a name to Ad" class="form-control" name="name_html" value="{{ad.name}}" />
+        </div>
+
+        <div class="mb-3">
+            <label for="budget_html" class="form-label required">Budget</label>
+            <input type="number" placeholder="Give your budget for the Ad" class="form-control" name="budget_html" value="{{ad.budget}}" />
+        </div>
+        
+        <div class="mb-3">
+            <label for="comments_html" class="form-label">Comments</label>
+            <input type="Text" placeholder="Give any info for influencer to read" class="form-control" name="comments_html" value="{{ad.comments}}" />
+        </div>
 
         {% if (influencers | length) > 0 %}
         {% for influ in influencers %}
@@ -50,7 +49,7 @@
                 </div>
                 <div class="cust_card_body_right center-item">
                     <a href="{{url_for('influ_view',influ_id=influ.id)}}" class="btn">View <i class="fa fa-list" aria-hidden="true"></i></a>
-                    <a href="{{url_for('send_ad_request',influ_id=influ.id)}}" class="btn">Send Request <i class="fa fa-envelope" aria-hidden="true"></i></a>
+                    <a href="{{url_for('send_ad_request',influencer_id=influ.id)}}" class="btn">Send Request <i class="fa fa-envelope" aria-hidden="true"></i></a>
                 </div> 
             </div>
         {% endfor %}

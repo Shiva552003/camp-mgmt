@@ -1,0 +1,70 @@
+{% extends 'layout_inner.html' %}
+{% block content %}
+
+<div class="container mt-4">
+    {% if view == 'campaign' %}
+        <h1 class="mb-4">Campaign Details</h1>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">{{ camp.name }}</h5>
+                <h6 class="card-subtitle mb-2 text-muted">ID: {{ camp.id }}</h6>
+                
+                <p class="card-text"><strong>Sponsor Name:</strong> {{ spon.name }}</p>
+                <p class="card-text"><strong>Budget:</strong> ${{ camp.budget }}</p>
+                <p class="card-text"><strong>Description:</strong> {{ camp.description }}</p>
+                <p class="card-text"><strong>Category:</strong> {{ camp.category }}</p>
+                <p class="card-text"><strong>Status:</strong> {{ camp.status }}</p>
+                <p class="card-text"><strong>Start Date:</strong> {{ camp.start_date.strftime('%Y-%m-%d')}}</p>
+                <p class="card-text"><strong>End Date:</strong> {{ camp.end_date.strftime('%Y-%m-%d')}}</p>
+                <p class="card-text"><strong>Goal Users:</strong> {{ camp.goal_users }}</p>
+                <p class="card-text"><strong>Flagged:</strong> {{ 'Yes' if camp.is_flagged else 'No' }}</p>
+            </div>
+        </div>
+        <h2 class="mt-4 mb-3">Associated Ads</h2>
+        {% if ads|length > 0 %}
+            <div class="list-group">
+                {% for ad in ads %}
+                    <a href="#" class="list-group-item list-group-item-action">
+                        Ad #{{ ad.id }} - {{ ad.title }}
+                    </a>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>No ads associated with this campaign.</p>
+        {% endif %}
+    
+    {% elif view == 'sponsor' %}
+        <h1 class="mb-4">Sponsor Details</h1>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">{{ spon.name }}</h5>
+                <h6 class="card-subtitle mb-2 text-muted">ID: {{ spon.id }}</h6>
+                
+                <p class="card-text"><strong>Company Name:</strong> {{ spon.company_name }}</p>
+                <p class="card-text"><strong>Industry:</strong> {{ spon.industry }}</p>
+                <p class="card-text"><strong>Description:</strong> {{ spon.desc }}</p>
+                <p class="card-text"><strong>Amount Spent:</strong> ${{ spon.amt_spent }}</p>
+                <p class="card-text"><strong>Verified:</strong> {{ 'Yes' if spon.is_verified else 'No' }}</p>
+                <p class="card-text"><strong>Flagged:</strong> {{ 'Yes' if spon.is_flagged else 'No' }}</p>
+            </div>
+        </div>
+
+    {% elif view == 'ad' %}
+        <h1 class="mb-4">Ad Details</h1>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">{{ ad.ad_name }}</h5>
+                <h6 class="card-subtitle mb-2 text-muted">ID: {{ ad.id }}</h6>
+                
+                <p class="card-text"><strong>Description:</strong> {{ ad.ad_description }}</p>
+                <p class="card-text"><strong>Campaign ID:</strong> {{ ad.campaign_id }}</p>
+                <p class="card-text"><strong>Status:</strong> {{ ad.ad_status }}</p>
+                <p class="card-text"><strong>Amount:</strong> ${{ ad.amount }}</p>
+                <p class="card-text"><strong>Payment Status:</strong> {{ ad.payment_status }}</p>
+                <p class="card-text"><strong>Flagged:</strong> {{ 'Yes' if ad.is_flagged else 'No' }}</p>
+            </div>
+        </div>
+    {% endif %}
+</div>
+
+{% endblock %}

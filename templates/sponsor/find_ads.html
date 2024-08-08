@@ -1,0 +1,78 @@
+{% extends 'layout_inner.html' %}
+{% block content %}
+    <div class="container">
+        <div class="findSelectors">
+            <a href="{{url_for('spon_find')}}" class="center_item {% if findActive == 'influ' %}inner_highlight{% endif %}">Find Influencers</a>
+            <a href="{{url_for('spon_find_Ads')}}" class="center_item {% if findActive == 'ads' %}inner_highlight{% endif %}">Find Ads</a>
+            <a href="{{url_for('spon_find_Camp')}}" class="center_item {% if findActive == 'camp' %}inner_highlight{% endif %}">Find Campaigns</a>
+        </div>
+        <div id="find_influ"> 
+        <form action="" method="post" enctype="multipart/form-data">
+            <div class="mb-3 findInflu">
+                <label class="form-label">Find Ads</label>
+                <div class="container">
+                    <input type="text" placeholder="Give Ad Name" class="form-control" name="search_influencerName" />
+                    <br>
+                    <select class="form-select" name="platform_html" aria-label="Select Platforms">
+                        <option hidden>Filter By Expiration</option>
+                        <option value="All">All</option>
+                        <option value="live">Live</option>
+                        <option value="closed">Closed</option>
+                    </select>
+                    <div class="center_item">
+                        <button type="submit" class="btn" style="margin-top: 20px;">Search</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+        {% if (ads | length) > 0 %}
+        {% for ad in ads %}
+            <div class="cust_card">
+                <div class="cust_card_body" style="width: 50%;">
+                    <h4 class="card-title">{{ad.ad_name}}</h4>
+                    <p class="p_label">Influencer</p>
+                    <p class="card-text">{{ad.influ_name}}</p>
+                    <p class="p_label">Amount</p>
+                    <p class="card-text">{{ad.amount}}</p>
+                </div>
+                <div class="cust_card_body_right center-item">
+                    <a href="{{ url_for('influ_view', influ_id=influ.id) }}" class="btn">View <i class="fa fa-list" aria-hidden="true"></i></a>
+                    <a href="{{ url_for('send_ad_request', influencer_id=influ.id) }}" class="btn">Send Request <i class="fa fa-envelope" aria-hidden="true"></i></a>
+                </div> 
+            </div>
+        {% endfor %}
+        {% elif showads == True %}
+            <h5>No ads by that name</h5>
+        {% endif %}
+        </div>
+    </div>
+{% endblock %}
+{% block style %}
+<style>
+    .findSelectors{
+        display: flex;
+    }
+    .findSelectors > a{
+        width: 33.33%;
+        min-height: 6vh;
+        border:1px solid #2489E7;
+        border-radius: 10px;
+        text-decoration: none;
+        color: #5daef8;
+    }
+    .findSelectors > a:hover{
+        color: white;
+        background-color: #5daef8;
+    }
+    .findInflu {
+        margin-top: 4%;
+        background-color: #5dadf870;
+        padding: 15px;
+        border-radius: 5px;
+    }
+    .inner_highlight{
+        background-color: #5daef8;
+        color: white !important;
+    }
+</style>
+{% endblock %}

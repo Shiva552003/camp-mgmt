@@ -70,10 +70,12 @@
             <h3>New Ad Requests:</h3>
             <a href="" class="btn">View All <i class="fa fa-arrow-right" aria-hidden="true"></i></a>
         </div>
-        {% for req in requests %}
+        {% for req,influ_name in requests %}
         <div class="cust_card">
             <div class="cust_card_body" style="width: 50%;">
                 <h4 class="card-title">{{req.name}}</h4>
+                <p class="p_label">Influ name</p>
+                <p class="card-text">{{influ_name}}</p>
                 <p class="card-text">{{req.comments}}</p>
             </div>
             <div class="cust_card_body_right center-item">
@@ -88,11 +90,11 @@
             <h3>Pending Ad Requests:</h3>
             <a href="" class="btn">View All <i class="fa fa-arrow-right" aria-hidden="true"></i></a>
         </div>
-        {% for req in pen_requests %}
+        {% for req,influ_name in pen_requests %}
         <div class="cust_card">
             <div class="cust_card_body" style="width: 50%;">
                 <h4 class="card-title">{{req.name}}</h4>
-                <p class="card-text">{{req.influ_name}}</p>
+                <p class="card-text">{{influ_name}}</p>
                 <p class="card-text">{{req.comments}}</p>
             </div>
             <div class="cust_card_body_right center-item">

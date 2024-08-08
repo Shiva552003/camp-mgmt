@@ -15,9 +15,15 @@ def spon_home():
     current_date = date.today()
 
     campaigns=Campaign.query.filter(Campaign.spon_id==spon.id,Campaign.start_date < current_date, Campaign.end_date > current_date).all()
-    requests=Ad_request.query.filter_by(spon_id=spon.id).all()
+    requests = db.session.query(Ad_request, Influencer.name.label('influ_name')).\
+    join(Influencer, Ad_request.influ_id == Influencer.id).\
+    filter(Ad_request.spon_id == spon.id, Ad_request.sender == "influencer").all()
 
-    return render_template('sponsor/home_spon.html', active='home', spon=spon,cover_photo=cover_photo,campaigns=campaigns,requests=requests)
+    pen_requests = db.session.query(Ad_request, Influencer.name.label('influ_name')).\
+    join(Influencer, Ad_request.influ_id == Influencer.id).\
+    filter(Ad_request.spon_id == spon.id, Ad_request.sender == "sponsor").all()
+
+    return render_template('sponsor/home_spon.html', active='home', spon=spon,cover_photo=cover_photo,campaigns=campaigns,requests=requests,pen_requests=pen_requests)
 
 @app.route('/sponsor/<int:sponsor_id>/cover_photo')
 def get_cover_photo(sponsor_id):
@@ -104,7 +110,7 @@ def spon_add_ad():
     return render_template('sponsor/add_ad.html', active='campaigns',ad=ad, showInfluencers=False)
 
 @app.route('/sponsor/add_ad', methods=['POST'])
-def spon_add_ad_post():
+def spon_search_in_add_ad():
     name = request.form.get('name_html')
     budget = request.form.get('budget_html')
     platform = request.form.get('platform_html')
@@ -137,32 +143,30 @@ def spon_add_ad_post():
             Influencer.x_followers > 0
         ).order_by(desc(Influencer.x_followers)).all()
 
-        
-    print("Influencers",influencers)
-    print("name",influ_name)
     return render_template('sponsor/add_ad.html', active='campaigns',ad=ad,influencers=influencers,showInfluencers=True)
 
-app.route('/sponsor/send_request/<int:influ_id>', methods=['POST'])
-def send_ad_request(influ_id):
+@app.route('/sponsor/send_request/<int:influencer_id>')
+def send_ad_request(influencer_id):
     name = request.form.get('name_html')
     budget = request.form.get('budget_html')
-    comments=request.form.get('comments_html')
+    comments = request.form.get('comments_html')
     platform = request.form.get('platform_html')
-    influ_name = request.form.get('search_influencerName')
     showInfluencers = request.form.get('showInfluencers')
-
-    ad_req=Ad_request(
-        influ_id=influ_id,
+    
+    
+    ad_req = Ad_request(
+        ad_name=name,
+        influ_id=influencer_id,
         spon_id=session['userId'],
-        name=name,
         amount=budget,
-        description=comments,
+        comments=comments,
+        sender="sponsor",
         previous_request_id=None,
-        )
+    )
 
     db.session.add(ad_req)
     db.session.commit()
-    return redirect(url_for('spon_view_camp',camp_id=campaign.id))
+    return redirect(url_for('spon_home'))
 
 
 
@@ -178,11 +182,21 @@ def send_ad_request(influ_id):
 
 
 
+
+@app.route('/find/sponsor/Ads')
+@sponsor_required
+def spon_find_Ads():
+    return render_template('sponsor/find_ads.html', active='find' , findActive="ads")
+
+@app.route('/find/sponsor/Camp')
+@sponsor_required
+def spon_find_Camp():
+    return render_template('sponsor/find_camp.html', active='find', findActive="camp")
 
 @app.route('/find/sponsor')
 @sponsor_required
 def spon_find():
-    return render_template('sponsor/find.html', active='find')
+    return render_template('sponsor/find_influ.html', active='find', findActive="influ")
 
 @app.route('/stats/sponsor')
 @sponsor_required
