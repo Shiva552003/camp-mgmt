@@ -6,6 +6,22 @@ from wrappers import sponsor_required
 from datetime import datetime,date
 import io
 
+#! list of routes and its purpose
+# 1. spon_home -> load the home page for spon, loads, live campaigns, requests, and pending requests
+# 2. get_cover_photo -> loads the cover photo from blob into image
+# 3. spon_campaigns -> loads the campaign and campaigns page, loads live, closed 
+# 4. add_campaigns -> add campaign page, just plain function call
+# 5. add_campaigns_post -> to handle the add campaign post request
+# 6. 
+# 7.
+# 8.
+# 9.
+# 10.
+# 11. spon_find_ads 
+# 12. spon_find_campaign
+# 13. spon_find_influencers
+# 14. spon_stats -> shows stats page for sponsors
+
 
 @app.route('/home/sponsor')
 @sponsor_required
@@ -86,6 +102,7 @@ def add_campaigns_Post():
             start_date=s_date,
             end_date=e_date,
             goal_users=goal,
+            is_flagged=False,
         )
         db.session.add(campaign)
         db.session.commit()
@@ -142,17 +159,23 @@ def spon_search_in_add_ad():
             Influencer.is_flagged == False,
             Influencer.x_followers > 0
         ).order_by(desc(Influencer.x_followers)).all()
+    else:
+        influencers=[]
+        flash("Please provide plateform", "danger")
 
     return render_template('sponsor/add_ad.html', active='campaigns',ad=ad,influencers=influencers,showInfluencers=True)
 
-@app.route('/sponsor/send_request/<int:influencer_id>')
+@app.route('/sponsor/send_request/<int:influencer_id>',methods=['POST'])
 def send_ad_request(influencer_id):
     name = request.form.get('name_html')
     budget = request.form.get('budget_html')
     comments = request.form.get('comments_html')
-    platform = request.form.get('platform_html')
-    showInfluencers = request.form.get('showInfluencers')
-    
+
+    print("this is name and budget", name, budget)
+
+    if(name == "" or budget == "" or name == None or budget == None):
+        flash("Please fill in all the fields","danger")
+        return redirect(url_for('spon_add_ad'))
     
     ad_req = Ad_request(
         ad_name=name,

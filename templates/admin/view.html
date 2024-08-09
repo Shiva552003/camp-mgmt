@@ -11,7 +11,7 @@
                 
                 <p class="card-text"><strong>Sponsor Name:</strong> {{ spon.name }}</p>
                 <p class="card-text"><strong>Budget:</strong> ${{ camp.budget }}</p>
-                <p class="card-text"><strong>Description:</strong> {{ camp.description }}</p>
+                <p class="card-text"><strong>Description:</strong> {{ camp.desc }}</p>
                 <p class="card-text"><strong>Category:</strong> {{ camp.category }}</p>
                 <p class="card-text"><strong>Status:</strong> {{ camp.status }}</p>
                 <p class="card-text"><strong>Start Date:</strong> {{ camp.start_date.strftime('%Y-%m-%d')}}</p>
@@ -24,8 +24,8 @@
         {% if ads|length > 0 %}
             <div class="list-group">
                 {% for ad in ads %}
-                    <a href="#" class="list-group-item list-group-item-action">
-                        Ad #{{ ad.id }} - {{ ad.title }}
+                    <a href="{{url_for('view',id=ad.id,role='ads')}}" class="list-group-item list-group-item-action">
+                        {{ ad.name }}
                     </a>
                 {% endfor %}
             </div>
@@ -53,15 +53,41 @@
         <h1 class="mb-4">Ad Details</h1>
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">{{ ad.ad_name }}</h5>
+                <h5 class="card-title"><strong>Name  </strong>{{ ad.name }}</h5>
                 <h6 class="card-subtitle mb-2 text-muted">ID: {{ ad.id }}</h6>
                 
-                <p class="card-text"><strong>Description:</strong> {{ ad.ad_description }}</p>
+                <p class="card-text"><strong>Description:</strong> {{ ad.desc }}</p>
                 <p class="card-text"><strong>Campaign ID:</strong> {{ ad.campaign_id }}</p>
                 <p class="card-text"><strong>Status:</strong> {{ ad.ad_status }}</p>
                 <p class="card-text"><strong>Amount:</strong> ${{ ad.amount }}</p>
                 <p class="card-text"><strong>Payment Status:</strong> {{ ad.payment_status }}</p>
                 <p class="card-text"><strong>Flagged:</strong> {{ 'Yes' if ad.is_flagged else 'No' }}</p>
+            </div>
+        </div>
+    {% elif view == 'influ' %}
+        <h1 class="mb-4">Influencer Details</h1>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title"><strong>Name: </strong>{{ influ.name }}</h5>
+                <h6 class="card-subtitle mb-2 text-muted">ID: {{ influ.id }}</h6>
+                
+                <p class="card-text"><strong>Description:</strong> {{ influ.desc }}</p>
+                <p class="card-text"><strong>Industry:</strong> {{ influ.industry }}</p>
+                <p class="card-text"><strong>Niche:</strong> {{ influ.niche }}</p>
+                <p class="card-text"><strong>Verified:</strong> {{ 'Yes' if influ.is_verified else 'No' }}</p>
+                <p class="card-text"><strong>Flagged:</strong> {{ 'Yes' if influ.is_flagged else 'No' }}</p>
+                <p class="card-text"><strong>Rating:</strong> {{ influ.rating }}</p>
+                
+                <p class="card-text"><strong>Instagram ID:</strong> {{ influ.insta_id }}</p>
+                <p class="card-text"><strong>Instagram Followers:</strong> {{ influ.insta_followers }}</p>
+                
+                <p class="card-text"><strong>YouTube ID:</strong> {{ influ.youtube_id }}</p>
+                <p class="card-text"><strong>YouTube Channel:</strong> {{ influ.youtube_channel }}</p>
+                <p class="card-text"><strong>YouTube Followers:</strong> {{ influ.youtube_followers }}</p>
+                
+                <p class="card-text"><strong>X ID:</strong> {{ influ.x_id }}</p>
+                <p class="card-text"><strong>X Name:</strong> {{ influ.x_name }}</p>
+                <p class="card-text"><strong>X Followers:</strong> {{ influ.x_followers }}</p>
             </div>
         </div>
     {% endif %}

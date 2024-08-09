@@ -3,11 +3,12 @@
 <script>
     $(document).ready(function() {
         $(".openDialogBtn").click(function() {
-            var sponName = $(this).data("name");
-            var sponId = $(this).data("id");
+            var name = $(this).data("name");
+            var id = $(this).data("id");
+            var filterOption = "{{ filter_option }}";
 
-            $("#dialogBox h3").text("Are you sure about flagging " + sponName +" ?");
-            $("#confirmflag").attr("href", "/flag/" + sponId); // adding href to the a tag inside the dialog box
+            $("#dialogBox h3").text("Are you sure about flagging " + name +" ?");
+            $("#confirmflag").attr("href", "/inverse/" + id+ "/"+filterOption); // adding href to the a tag inside the dialog box
 
             $("#dialogBox").fadeIn(); // Show dialog box
         });
@@ -16,22 +17,6 @@
         });
     });
 </script>
-<style>
-    .dialog-box {
-        display: none;
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background-color: #fff;
-        padding: 20px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.434);
-        z-index: 1000;
-    }
-
-
-</style>
-
 <div class="container">
     <h1>Find Page</h1>
 </div>
@@ -68,6 +53,8 @@
         </form>
     </nav>
 
+    <p>** To get all results keep the search empty</p>
+
     {% for res in results %}
 
     <div class="cust_card">
@@ -76,8 +63,12 @@
             <p class="card-text">{{res.desc}}</p>
         </div>
         <div class="cust_card_body_right center-item">
-            <a href="" class="btn">View <i class="fa fa-list" aria-hidden="true"></i></a>
+            <a href="{{url_for('view',id=res.id,role=filter_option)}}" class="btn">View <i class="fa fa-list" aria-hidden="true"></i></a>
+            {% if res.is_flagged %}
+            <a href="#" class="btn btn_red openDialogBtn" data-name="{{res.name}}" data-id="{{res.id}}">UnFlag<i class="fa fa-close" aria-hidden="true"></i></a>
+            {% else %}
             <a href="#" class="btn btn_red openDialogBtn" data-name="{{res.name}}" data-id="{{res.id}}">Flag <i class="fa fa-flag" aria-hidden="true"></i></a>
+            {% endif %}
         </div>
     </div>
         
@@ -89,6 +80,17 @@
     .form-select{
         border-radius: 15px !important;
         margin-left: 2px;
+    }
+    .dialog-box {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #fff;
+        padding: 20px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.434);
+        z-index: 1000;
     }
 </style>    
 {% endblock %}

@@ -15,45 +15,49 @@
                 </select>
                 <br>
                 <input type="text" placeholder="Search for influencers" class="form-control" name="search_influencerName" value="{{ ad.influencerName }}" />
+                <p>** To get all results keep the search empty</p>
                 <div class="center_item">
                     <button type="submit" class="btn" style="margin-top: 20px;">Search</button>
                 </div>
             </div>
         </div>
+    </form>
+    <form method="POST">
         <div class="mb-3">
             <label for="name_html" class="form-label required">Ad Name</label>
-            <input type="text" placeholder="Give a name to Ad" class="form-control" name="name_html" value="{{ad.name}}" />
+            <input type="text" placeholder="Give a name to Ad" class="form-control" name="name_html" value="{{ ad.name }}" />
         </div>
-
+    
         <div class="mb-3">
             <label for="budget_html" class="form-label required">Budget</label>
-            <input type="number" placeholder="Give your budget for the Ad" class="form-control" name="budget_html" value="{{ad.budget}}" />
+            <input type="number" placeholder="Give your budget for the Ad" class="form-control" name="budget_html" value="{{ ad.budget }}" />
         </div>
         
         <div class="mb-3">
             <label for="comments_html" class="form-label">Comments</label>
-            <input type="Text" placeholder="Give any info for influencer to read" class="form-control" name="comments_html" value="{{ad.comments}}" />
+            <input type="text" placeholder="Give any info for influencer to read" class="form-control" name="comments_html" value="{{ ad.comments }}" />
         </div>
-
-        {% if (influencers | length) > 0 %}
-        {% for influ in influencers %}
-            <div class="cust_card">
-                <div class="cust_card_body" style="width: 50%;">
-                    <h4 class="card-title">{{influ.name}}</h4>
-                    <p class="p_label" >Rating</p>
-                    <p class="card-text">{{influ.rating}}</p>
-                    <p class="p_label" >Niche</p>
-                    <p class="card-text">{{influ.niche}}</p>
-                    <p class="p_label" >Total Followers</p>
-                    <p class="card-text">{{[influ.insta_followers,influ.youtube_followers,influ.x_followers] | max}}</p>
+    
+        {% if influencers|length > 0 %}
+            {% for influ in influencers %}
+                <div class="cust_card">
+                    <div class="cust_card_body" style="width: 50%;">
+                        <h4 class="card-title">{{ influ.name }}</h4>
+                        <p class="p_label">Rating</p>
+                        <p class="card-text">{{ influ.rating }}</p>
+                        <p class="p_label">Niche</p>
+                        <p class="card-text">{{ influ.niche }}</p>
+                        <p class="p_label">Total Followers</p>
+                        <p class="card-text">{{ [influ.insta_followers, influ.youtube_followers, influ.x_followers] | max }}</p>
+                    </div>
+                    <div class="cust_card_body_right center-item">
+                        <button type="submit" formaction="{{ url_for('send_ad_request', influencer_id=influ.id) }}" class="btn">
+                            Send Request <i class="fa fa-envelope" aria-hidden="true"></i>
+                        </button>
+                    </div> 
                 </div>
-                <div class="cust_card_body_right center-item">
-                    <a href="{{url_for('influ_view',influ_id=influ.id)}}" class="btn">View <i class="fa fa-list" aria-hidden="true"></i></a>
-                    <a href="{{url_for('send_ad_request',influencer_id=influ.id)}}" class="btn">Send Request <i class="fa fa-envelope" aria-hidden="true"></i></a>
-                </div> 
-            </div>
-        {% endfor %}
-        {% elif showInfluencers == True %}
+            {% endfor %}
+        {% elif showInfluencers %}
             <h5>No Influencers by that name</h5>
         {% endif %}
     </form>

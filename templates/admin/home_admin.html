@@ -28,11 +28,9 @@
                 </div>
                 {% endif %}
             <div class="card-footer">
-                <form action="">
-                    <button class="btn" type="submit">
-                        View All <i class="fa fa-arrow-right" aria-hidden="true"></i>
-                    </button>
-                </form>
+                <a href="{{url_for("search_all",filter_option="camps")}}" class="btn" type="submit">
+                    View All <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                </a>
             </div>
         </div>
     </div>
@@ -40,13 +38,13 @@
     <div class="flagged-users">
         <div class="card">
             <div class="card-header">Flagged Influencers</div>
-                {% for camp in flag_users[:3]%}
+                {% for users in flag_users[:3]%}
                 <div class="cust_card">
                     <div class="cust_card_body" style="width: 50%;">
-                        <h6 class="card-title">{{camp.name}}</h6>
+                        <h6 class="card-title">{{users.name}}</h6>
                     </div>
                     <div class="cust_card_body_right center-item">
-                        <a href="" class="btn btn_red">Unflag <i class="fa fa-close" aria-hidden="true"></i></a>
+                        <a href="{{url_for('unflag_influ',id=users.id)}}" class="btn btn_red">Unflag <i class="fa fa-close" aria-hidden="true"></i></a>
                     </div>
                 </div>
                 {% endfor %}
@@ -56,11 +54,9 @@
                 </div>
                 {% endif %}
             <div class="card-footer">
-                <form action="">
-                    <button class="btn" type="submit">
-                        View All <i class="fa fa-arrow-right" aria-hidden="true"></i>
-                    </button>
-                </form>
+                <a  href="{{url_for("search_all",filter_option="flag_influ")}}"  class="btn" type="submit">
+                    View All <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                </a>
             </div>
           </div>
     </div>
@@ -74,7 +70,7 @@
                         <h6 class="card-title">{{camp.name}}</h6>
                     </div>
                     <div class="cust_card_body_right center-item">
-                        <a href="" class="btn btn_red">Unflag <i class="fa fa-close" aria-hidden="true"></i></a>
+                        <a href="{{url_for('unflag_camp',id=camp.id)}}" class="btn btn_red">Unflag <i class="fa fa-close" aria-hidden="true"></i></a>
                     </div>
                 </div>
                 {% endfor %}
@@ -84,11 +80,9 @@
                 </div>
                 {% endif %}
             <div class="card-footer">
-                <form action="">
-                    <button class="btn" type="submit">
-                        View All <i class="fa fa-arrow-right" aria-hidden="true"></i>
-                    </button>
-                </form>
+                <a href="{{url_for('search_all',filter_option='flag_camps')}}" class="btn" type="submit">
+                    View All <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                </a>
             </div>
           </div>
     </div>
