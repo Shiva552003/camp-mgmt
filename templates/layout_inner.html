@@ -43,6 +43,11 @@
         background-color: #fb3333 !important;
         color: white;
       }
+      .navbar{
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+      }
     </style>
     {% block style %}
     {% endblock style %}
@@ -58,7 +63,7 @@
             <li class="nav-item {% if active == 'home' %}highlight{% endif %}">
               <a class="nav-link center_item" href="/">Home</a>
             </li>
-            {% if session.role!='admin' %}
+            {% if session.role=='sponsor' %}
             <li class="nav-item {% if active == 'campaigns' %}highlight{% endif %}">
               <a class="nav-link center_item" href="/campaigns">Campaigns</a>
             </li>

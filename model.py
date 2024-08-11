@@ -86,10 +86,10 @@ class Ad_request(db.Model):
     comments = db.Column(db.String(80), nullable=True)
     amount = db.Column(db.Integer)
     growth_promise = db.Column(db.String(10))
-    sender=db.Column(db.String(20),nullable=False)
+    sender = db.Column(db.String(20), nullable=False)
     previous_request_id = db.Column(db.Integer, db.ForeignKey('ad_request.id'), nullable=True)
-    
-    previous_request = db.relationship('Ad_request', remote_side=[id], backref='new_versions')
+    next_request_id = db.Column(db.Integer, db.ForeignKey('ad_request.id'), nullable=True)
+    status = db.Column(db.String(10), nullable=True)
 
 class is_verified(db.Model):
     id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)

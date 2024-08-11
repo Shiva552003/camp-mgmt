@@ -8,62 +8,23 @@
             <img src="../../static/add_icon.svg" alt="" class="center_item">
         </a>
     </div>
-    <div class="info_table">
-        <h3>Info Table</h3>
-        <table class="table">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">Influencer</th>
-                <th scope="col">Campaign</th>
-                <th scope="col">Cost</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th scope="row">1</th>
-                <td>influ-1</td>
-                <td>hello-2</td>
-                <td>20,000</td>
-              </tr>
-              <tr>
-                <th scope="row">2</th>
-                <td>influ-2</td>
-                <td>hello-2</td>
-                <td>50,000</td>
-              </tr>
-              <tr>
-                <th scope="row">3</th>
-                <td>influ-3</td>
-                <td>hello-2</td>
-                <td>60,000</td>
-              </tr>
-              <tr>
-                <th scope="row">4</th>
-                <td>influ-4</td>
-                <td>hello-2</td>
-                <td>10,000</td>
-              </tr>
-              <tr>
-                <th scope="row">5</th>
-                <td>influ-5</td>
-                <td>hello-2</td>
-                <td>1,000</td>
-              </tr>
-              <tr>
-                <th scope="row">6</th>
-                <td>influ-6</td>
-                <td>hello-2</td>
-                <td>2,000</td>
-              </tr>
-              <tr>
-                <th scope="row">7</th>
-                <td>influ-7</td>
-                <td>Hello-3</td>
-                <td>1,00,000</td>
-              </tr>
-            </tbody>
-          </table>
+    <div class="info">
+        <div class="fields">
+            <h6>No of Campaigns Created: </h6>
+            <p class="value">{{no_of_camps}}</p>    
+        </div>
+        <div class="fields">
+            <h6>No of Ads Created: </h6>
+            <p class="value">{{no_of_ads}}</p>
+        </div>
+        <div class="fields">
+            <h6>No of Collaborations: </h6>
+            <p class="value">{{no_of_collabs}}</p>
+        </div>
+        <div class="fields">
+            <h6>Amount spent: </h6>
+            <p class="value">{{total_amount_spent | default(0)}}</p>
+        </div>
     </div>
 </div>
 <hr>
@@ -128,6 +89,7 @@
 <style>
     .add_campaign{
         width: 40%;
+        border-right: 1px solid;
     }
     .add_button{
         width: 100%;
@@ -140,21 +102,20 @@
         width: 80%;
         height: 80%;
     }
-    .info_table{
-        width:60%;
-        overflow: scroll;
-        padding-left:20px;
+    .info{
+        margin-left: 2rem;
     }
-    .info_table::-webkit-scrollbar {
-        width: 12px;
-        height: 12px;
+    .info > .fields{
+        display: flex;
+        padding: .5rem 0 .5rem 0;
     }
-    .info_table:hover::-webkit-scrollbar-thumb {
-        background-color: #888;
-        border-radius: 10px;
-        border:2px solid #f1f1f1;
+    .info > .fields > h6{
+        margin-bottom: 0 !important;
     }
-
-
+    .info > .fields .value{
+        margin-left: 15rem;
+        font-size: larger;
+        position: absolute;
+    }
 </style>
 {% endblock %}

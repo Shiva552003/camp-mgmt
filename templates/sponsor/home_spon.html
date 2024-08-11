@@ -1,5 +1,86 @@
 {% extends 'layout_inner.html' %}
 {% block content %}
+<div class="container">
+    <h1 style="text-decoration: underline;">Welcome <span class="heading">{{spon.name}}</span></h1>
+    {% if viewMore %}
+    {% else %}
+    <div class="short_info">
+        <div class="icon center_item">
+            <img src="{{cover_photo}}" alt="Cover Photo">
+        </div>
+        <div class="details">
+            <ul>
+                <li>Name: {{spon.name}}</li>
+                <li>Desc: {{spon.desc}}</li>
+                <li>Company Name: {{spon.company_name}}</li>
+            </ul>
+        </div>
+        <div>
+            <a href="{{url_for('view_spon_details')}}" class="btn submit_btn">View all details</a>
+        </div>
+    </div>
+        
+    {% endif %}
+    <br>
+    <div class="live_campaigns card_set">
+        <div class="title_n_view">
+            <h3>Live Campaigns:</h3>
+            <a href="{{url_for('view_all_live_camp')}}" class="btn">View All <i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+        </div>
+        {% for camp in campaigns %}
+        <div class="cust_card">
+            <div class="cust_card_body" style="width: 50%;">
+                <h4 class="card-title">{{camp.name}}</h4>
+                <p class="card-text">{{camp.budget}}</p>
+            </div>
+            <div class="cust_card_body_right center-item">
+                <a href="{{url_for('spon_view_camp',camp_id=camp.id)}}" class="btn">View <i class="fa fa-list" aria-hidden="true"></i></a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <br>
+    <div class="new_requests card_set">
+        <div class="title_n_view">
+            <h3>New Ad Requests:</h3>
+            <a href="{{url_for('view_all_new_req')}}" class="btn">View All <i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+        </div>
+        {% for req,influ_name in requests %}
+        <div class="cust_card">
+            <div class="cust_card_body" style="width: 50%;">
+                <h4 class="card-title">{{req.ad_name}}</h4>
+                <p class="p_label">Influ name : </p>
+                <p class="card-text">{{influ_name}}</p>
+                <p class="card-text">{{req.comments}}</p>
+            </div>
+            <div class="cust_card_body_right center-item">
+                <a href="" class="btn">View <i class="fa fa-list" aria-hidden="true"></i></a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <br>
+    <div class="pending_requests card_set">
+        <div class="title_n_view">
+            <h3>Pending Ad Requests:</h3>
+            <a href="{{url_for('view_all_pending_req')}}" class="btn">View All <i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+        </div>
+        {% for req,influ_name in pen_requests %}
+        <div class="cust_card">
+            <div class="cust_card_body" style="width: 50%;">
+                <h4 class="card-title">{{req.ad_name}}</h4>
+                <p class="p_label">Influ name : </p>
+                <p class="card-text">{{influ_name}}</p>
+                <p class="card-text">{{req.comments}}</p>
+            </div>
+            <div class="cust_card_body_right center-item">
+                <a href="" class="btn">View <i class="fa fa-list" aria-hidden="true"></i></a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+{% endblock %}
+{% block style %}
 <style>
     .short_info{
         border:1px solid rgba(0, 0, 0, 0.563);
@@ -24,83 +105,4 @@
         list-style-type: none;
     }
 </style>
-<div class="container">
-    <h1 style="text-decoration: underline;">Welcome <span class="heading">{{spon.name}}</span></h1>
-    {% if viewMore %}
-    {% else %}
-    <div class="short_info">
-        <div class="icon center_item">
-            <img src="{{cover_photo}}" alt="Cover Photo">
-        </div>
-        <div class="details">
-            <ul>
-                <li>Name: {{spon.name}}</li>
-                <li>Desc: {{spon.desc}}</li>
-                <li>Company Name: {{spon.company_name}}</li>
-            </ul>
-        </div>
-        <div><form action="view_details">
-                <button type="submit" class="btn submit_btn">View all details</button>
-            </form>
-        </div>
-    </div>
-        
-    {% endif %}
-    <br>
-    <div class="live_campaigns card_set">
-        <div class="title_n_view">
-            <h3>Live Campaigns:</h3>
-            <a href="" class="btn">View All <i class="fa fa-arrow-right" aria-hidden="true"></i></a>
-        </div>
-        {% for camp in campaigns %}
-        <div class="cust_card">
-            <div class="cust_card_body" style="width: 50%;">
-                <h4 class="card-title">{{camp.name}}</h4>
-                <p class="card-text">{{camp.budget}}</p>
-            </div>
-            <div class="cust_card_body_right center-item">
-                <a href="" class="btn">View <i class="fa fa-list" aria-hidden="true"></i></a>
-            </div>
-        </div>
-        {% endfor %}
-    </div>
-    <br>
-    <div class="new_requests card_set">
-        <div class="title_n_view">
-            <h3>New Ad Requests:</h3>
-            <a href="" class="btn">View All <i class="fa fa-arrow-right" aria-hidden="true"></i></a>
-        </div>
-        {% for req,influ_name in requests %}
-        <div class="cust_card">
-            <div class="cust_card_body" style="width: 50%;">
-                <h4 class="card-title">{{req.name}}</h4>
-                <p class="p_label">Influ name</p>
-                <p class="card-text">{{influ_name}}</p>
-                <p class="card-text">{{req.comments}}</p>
-            </div>
-            <div class="cust_card_body_right center-item">
-                <a href="" class="btn">View <i class="fa fa-list" aria-hidden="true"></i></a>
-            </div>
-        </div>
-        {% endfor %}
-    </div>
-    <br>
-    <div class="pending_requests card_set">
-        <div class="title_n_view">
-            <h3>Pending Ad Requests:</h3>
-            <a href="" class="btn">View All <i class="fa fa-arrow-right" aria-hidden="true"></i></a>
-        </div>
-        {% for req,influ_name in pen_requests %}
-        <div class="cust_card">
-            <div class="cust_card_body" style="width: 50%;">
-                <h4 class="card-title">{{req.name}}</h4>
-                <p class="card-text">{{influ_name}}</p>
-                <p class="card-text">{{req.comments}}</p>
-            </div>
-            <div class="cust_card_body_right center-item">
-                <a href="" class="btn">View <i class="fa fa-list" aria-hidden="true"></i></a>
-            </div>
-        </div>
-        {% endfor %}
-    </div>
 {% endblock %}
