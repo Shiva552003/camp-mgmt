@@ -61,21 +61,20 @@
         <br>
         <br>
         <div class="title_n_view">
-            <h3>Campaign History:</h3>
+            <h3> Pending Requests</h3>
             <a href="" class="btn">View All <i class="fa fa-arrow-right" aria-hidden="true"></i></a>
         </div>
-        {% for camp in camp_history %}
+        {% for req in pending_requests %}
         <div class="cust_card">
             <div class="cust_card_body" style="width: 50%;">
-                <h4 class="card-title">{{camp.username}}</h4>
-                <p class="card-text">{{camp.role}}</p>
+                <h4 class="card-title">{{req.ad_name}}</h4>
+                <p class="card-text"><span class="p_lable">Amount : </span>{{req.amount}}</p>
             </div>
             <div class="cust_card_body_right center-item">
                 <a href="" class="btn">View <i class="fa fa-list" aria-hidden="true"></i></a>
             </div>
         </div>
         {% endfor %}
-    
     </div>
 </div>
 {% endblock %}

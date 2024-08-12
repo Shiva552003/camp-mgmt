@@ -90,7 +90,6 @@ def search_all(search_query, filter_option):
 
 @app.route('/inverse/<int:id>/<string:role>')
 def inverse(id, role):
-    print("role", role)
 
     if role == "camps" or role == "flag_camps":
         res = Campaign.query.filter_by(id=id).first()

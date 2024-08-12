@@ -2,34 +2,25 @@
 {% block content %}
     <div class="container">
         <div class="findSelectors">
-            <a href="{{url_for('spon_find')}}" class="center_item heading {% if findActive == 'influ' %}inner_highlight{% endif %}">Find Influencers</a>
-            <a href="{{url_for('spon_find_Ads')}}" class="center_item heading {% if findActive == 'ads' %}inner_highlight{% endif %}">Find Ads</a>
-            <a href="{{url_for('spon_find_Camp')}}" class="center_item heading {% if findActive == 'camp' %}inner_highlight{% endif %}">Find Campaigns</a>
+            <a href="{{url_for('influ_find')}}" class="center_item heading {% if findActive == 'spon' %}inner_highlight{% endif %}">Find Sponsors</a>
+            <a href="{{url_for('influ_find_Ads')}}" class="center_item heading {% if findActive == 'ads' %}inner_highlight{% endif %}">Find Ads</a>
+            <a href="{{url_for('influ_find_Camp')}}" class="center_item heading {% if findActive == 'camp' %}inner_highlight{% endif %}">Find Campaigns</a>
         </div>
         <div>
-            <form action="{{url_for('spon_find_Camp')}}" method="post" enctype="multipart/form-data">
+            <form action="{{url_for('influ_find_Camp')}}" method="post" enctype="multipart/form-data">
                 <div class="mb-3 findInflu">
                     <label class="form-label">Find Campaigns</label>
                     <div class="container">
                         <input type="text" placeholder="Give Campaign Name" class="form-control" name="search_campName" />
-                        <p>** To get all results keep the search empty</p>
                         <br>
-                        <select class="form-select" name="status_html" aria-label="Select Status">
-                            <option hidden>Filter By Status</option>
-                            <option value="All">All</option>
-                            <option value="live">Live</option>
-                            <option value="closed">Closed</option>
-                            <option value="flagged">Flagged</option>
-                        </select>
+                        <input type="text" placeholder="Give Sponsor Name" class="form-control" name="search_sponName" />
+                        <br>
                         <div class="center_item">
                             <button type="submit" class="btn" style="margin-top: 20px;">Search</button>
                         </div>
                     </div>
                 </div>
             </form>
-        {% if statusName %}
-            <h2>{{statusName}}</h2>
-        {% endif %}
         {% if (camps | length) > 0 %}
         {% for camp in camps %}
             <div class="cust_card">
@@ -41,7 +32,8 @@
                     <p class="card-text">{{camp.goal_users}}</p>
                 </div>
                 <div class="cust_card_body_right center-item">
-                    <a href="{{url_for('spon_view_camp',camp_id=camp.id)}}" class="btn">View <i class="fa fa-list" aria-hidden="true"></i></a>
+                    <a href="" class="btn">View <i class="fa fa-list" aria-hidden="true"></i></a>
+                    <a href="{{ url_for('send_ad_request', influencer_id=camp.id) }}" class="btn">Send Request <i class="fa fa-envelope" aria-hidden="true"></i></a>
                 </div> 
             </div>
         {% endfor %}

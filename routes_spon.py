@@ -62,15 +62,13 @@ def spon_campaigns():
     
     spon=Sponsor.query.filter_by(id=session['userId']).first()
     live_camp=Campaign.query.filter(Campaign.spon_id==spon.id,Campaign.start_date < current_date, Campaign.end_date > current_date).all()
-    closed_camp=Campaign.query.filter(Campaign.spon_id==spon.id, Campaign.end_date < current_date).all()
+    closed_camp=Campaign.query.filter(Campaign.spon_id==spon.id, Campaign.end_date < current_date, Campaign.is_flagged.is_(False)).all()
     flagged_camp=Campaign.query.filter(Campaign.spon_id==spon.id, Campaign.is_flagged == True).all()
 
     no_of_ads = Ad.query.filter_by(spon_id=spon.id).count()
     no_of_collabs = Ad.query.filter_by(spon_id=spon.id).distinct(Ad.influ_id).count()
     no_of_camps = Campaign.query.filter_by(spon_id=spon.id).count()
     total_amount_spent = Ad.query.with_entities(func.sum(Ad.amount)).filter_by(spon_id=spon.id).scalar()
-
-    print("toatl_amot_spent",total_amount_spent)
 
     return render_template('sponsor/campaigns.html', active='campaigns',live_campaigns=live_camp, closed_campaigns=closed_camp, flagged_camp=flagged_camp
                         , no_of_ads=no_of_ads, no_of_collabs=no_of_collabs, total_amount_spent=total_amount_spent,no_of_camps=no_of_camps)
@@ -122,18 +120,36 @@ def add_campaigns_Post():
 def spon_view_camp(camp_id):
     camp = Campaign.query.filter_by(id=camp_id).first()
     ads = Ad.query.filter_by(campaign_id=camp.id).all()
-    return render_template('sponsor/view_camp.html', active='campaigns', camp=camp,ads=ads)
+    current_date = date.today()
+
+    editable = False if camp.is_flagged or camp.end_date < current_date else True;
+
+    return render_template('sponsor/view_camp.html', active='campaigns', camp=camp,ads=ads,editable=editable)
 
 @app.route('/sponsor/view_ad/<int:ad_id>')
 def spon_view_ad(ad_id):
     ad = Ad.query.filter_by(id=ad_id).first()
-    return render_template('sponsor/view_camp.html', active='campaigns', ads=ad)
+    sponsor = Sponsor.query.get(ad.spon_id)
+    influencer = Influencer.query.get(ad.influ_id)
+    camp=Campaign.query.get(ad.campaign_id)
+
+    return render_template('sponsor/view_ad.html', active='campaigns', ads=ad,sponsor=sponsor,camp=camp,influencer=influencer)
+
+@app.route('/sponsor/delete')
+def delete_ad():
+    ad_id=request.args.get('ad_id');
+    ad = Ad.query.filter_by(id=ad_id).first()
+
+    db.session.delete(ad)
+    db.session.commit()
+    return redirect(url_for('render_result_ads',status='live',search_query=''))
 
 
 @app.route('/sponsor/add_ad')
 def spon_add_ad():
     ad={}
-    return render_template('sponsor/add_ad.html', active='campaigns',ad=ad, showInfluencers=False)
+    camp_id=request.args.get('camp_id')
+    return render_template('sponsor/add_ad.html', active='campaigns',ad=ad, showInfluencers=False,camp_id=camp_id)
 
 @app.route('/sponsor/add_ad', methods=['POST'])
 def spon_search_in_add_ad():
@@ -179,8 +195,7 @@ def send_ad_request(influencer_id):
     name = request.form.get('name_html')
     budget = request.form.get('budget_html')
     comments = request.form.get('comments_html')
-
-    print("this is name and budget", name, budget)
+    camp_id=request.args.get('camp_id')
 
     if(name == "" or budget == "" or name == None or budget == None):
         flash("Please fill in all the fields","danger")
@@ -193,6 +208,7 @@ def send_ad_request(influencer_id):
         amount=budget,
         comments=comments,
         sender="s",
+        campaign_id=camp_id,
         previous_request_id=None,
         next_request_id=None,
         status="P"
@@ -201,6 +217,12 @@ def send_ad_request(influencer_id):
     db.session.add(ad_req)
     db.session.commit()
     return redirect(url_for('spon_home'))
+
+@app.route('/sponsor/send_request/from_find',methods=['get'])
+def send_ad_request_from_find():
+
+    flash('Choose campaigns first','warning')
+    return redirect(url_for('spon_campaigns'))
 
 
 
@@ -352,10 +374,36 @@ def spon_find():
 
     return render_template('sponsor/find_influ.html', active='find', findActive="influ",influencers=results)
 
+# @app.route('/stats/sponsor')
+# @sponsor_required
+# def spon_stats():
+#     spon_id = session['userId'];
+
+#     no_of_ads = Ad.query.filter_by(spon_id=spon_id).count()
+#     no_of_collabs = Ad.query.filter_by(spon_id=spon_id).distinct(Ad.influ_id).count()
+#     no_of_camps = Campaign.query.filter_by(spon_id=spon_id).count()
+#     total_amount_spent = Ad.query.with_entities(func.sum(Ad.amount)).filter_by(spon_id=spon_id).scalar()
+
+#     labels = ['Campaigns Created', 'Ads Created', 'Collaborations', 'Amount Spent']
+#     data = [no_of_camps, no_of_ads, no_of_collabs, total_amount_spent]
+
+#     return render_template('sponsor/stats.html', labels=labels, data=data, active='stats')
+
+
 @app.route('/stats/sponsor')
 @sponsor_required
 def spon_stats():
-    return render_template('sponsor/stats.html', active='stats')
+    spon_id = session['userId']
+    influencer_ids = db.session.query(Ad.influ_id).filter_by(spon_id=spon_id).distinct().all()
+    influencer_ids = [id for (id,) in influencer_ids]
+
+    total_amount_spent = db.session.query(func.sum(Ad.amount)).filter_by(spon_id=spon_id).scalar() or 0
+    total_users_reached = db.session.query(func.sum(Influencer.insta_followers + Influencer.youtube_followers)).filter(Influencer.id.in_(influencer_ids)).scalar() or 0
+    
+    labels = ['Amount Spent', 'Users Reached']
+    data = [total_amount_spent, total_users_reached]
+
+    return render_template('sponsor/stats.html', active='stats', labels=labels, data=data)
 
 @app.route('/view_spon_details')
 @sponsor_required
@@ -401,3 +449,50 @@ def view_all_new_req():
 @app.route('/view_all_pending_req')
 def view_all_pending_req():
     return redirect(url_for('render_result_ads',status='ad_request_p',search_query=None))
+
+@app.route('/view/ad_request')
+def view_ad_request():
+    req_id = request.args.get('req_id')
+    negotiate = request.args.get('negotiate')
+    only_view = False
+    only_view = request.args.get('only_view')
+    ad_request=Ad_request.query.get(req_id);
+    sponsor = Sponsor.query.get(ad_request.spon_id)
+    influencer = Influencer.query.get(ad_request.influ_id)
+    camp=Campaign.query.get(ad_request.campaign_id)
+
+    return render_template('sponsor/view_ad_request.html',active="home",ad_request=ad_request,edit=False,sponsor=sponsor,influencer=influencer,camp=camp,only_view=only_view)
+
+@app.route('/accept/ad_req')
+def accept_ad_request():
+    req_id = request.args.get('req_id')
+    ad_request = Ad_request.query.get(req_id)
+    
+    if ad_request:
+        new_ad = Ad(influ_id=ad_request.influ_id,spon_id=ad_request.spon_id,campaign_id=ad_request.campaign_id,name=ad_request.ad_name,desc=ad_request.comments,ad_status='Pending',is_flagged=False,amount=ad_request.amount,payment_status='Not Paid')
+
+        db.session.add(new_ad)
+        db.session.delete(ad_request)
+        db.session.commit()
+    return redirect(url_for('spon_home'))
+
+@app.route('/reject/ad_req')
+def reject_ad_request():
+    req_id = request.args.get('req_id')
+    ad_request = Ad_request.query.get(req_id)
+    
+    ad_request.status='R'
+    flash('Operation successful', 'success')
+    db.session.commit()
+    return redirect(url_for('spon_home'))
+
+@app.route('/delete/campaign')
+def delete_campaign():
+    camp_id=request.args.get('camp_id')
+
+    camp=Campaign.query.get(camp_id)
+    db.session.delete(camp)
+    db.session.commit()
+    flash("Successfully deleted campaign","success")
+
+    return redirect(url_for('spon_home'))

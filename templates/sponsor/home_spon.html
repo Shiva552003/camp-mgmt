@@ -42,7 +42,7 @@
     <br>
     <div class="new_requests card_set">
         <div class="title_n_view">
-            <h3>New Ad Requests:</h3>
+            <h3>New Ad Requests :<span class="p_label" style="font-size: small;">(to you)</span></h3>
             <a href="{{url_for('view_all_new_req')}}" class="btn">View All <i class="fa fa-arrow-right" aria-hidden="true"></i></a>
         </div>
         {% for req,influ_name in requests %}
@@ -54,7 +54,7 @@
                 <p class="card-text">{{req.comments}}</p>
             </div>
             <div class="cust_card_body_right center-item">
-                <a href="" class="btn">View <i class="fa fa-list" aria-hidden="true"></i></a>
+                <a href="{{url_for('view_ad_request',req_id=req.id)}}" class="btn">View <i class="fa fa-list" aria-hidden="true"></i></a>
             </div>
         </div>
         {% endfor %}
@@ -62,7 +62,8 @@
     <br>
     <div class="pending_requests card_set">
         <div class="title_n_view">
-            <h3>Pending Ad Requests:</h3>
+            <h3>Pending Ad Requests :<span class="p_label" style="font-size: small;">(from you)</span></h3>
+            
             <a href="{{url_for('view_all_pending_req')}}" class="btn">View All <i class="fa fa-arrow-right" aria-hidden="true"></i></a>
         </div>
         {% for req,influ_name in pen_requests %}
@@ -74,7 +75,7 @@
                 <p class="card-text">{{req.comments}}</p>
             </div>
             <div class="cust_card_body_right center-item">
-                <a href="" class="btn">View <i class="fa fa-list" aria-hidden="true"></i></a>
+                <!-- <a href="" class="btn">View <i class="fa fa-list" aria-hidden="true"></i></a> -->
             </div>
         </div>
         {% endfor %}

@@ -65,6 +65,7 @@ class Campaign(db.Model):
     is_flagged = db.Column(db.Boolean)
 
     ads = db.relationship('Ad', backref='campaign', lazy=True, cascade='all, delete-orphan')
+    ad_requests = db.relationship('Ad_request', backref='campaign', lazy=True, cascade='all, delete-orphan')
 
 class Ad(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -83,6 +84,7 @@ class Ad_request(db.Model):
     ad_name = db.Column(db.String(80), nullable=False)
     influ_id = db.Column(db.Integer, db.ForeignKey('influencer.id'))
     spon_id = db.Column(db.Integer, db.ForeignKey('sponsor.id'))
+    campaign_id=db.Column(db.Integer, db.ForeignKey('campaign.id'))
     comments = db.Column(db.String(80), nullable=True)
     amount = db.Column(db.Integer)
     growth_promise = db.Column(db.String(10))

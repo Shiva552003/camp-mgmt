@@ -51,7 +51,7 @@
                         <p class="card-text">{{ [influ.insta_followers, influ.youtube_followers, influ.x_followers] | max }}</p>
                     </div>
                     <div class="cust_card_body_right center-item">
-                        <button type="submit" formaction="{{ url_for('send_ad_request', influencer_id=influ.id) }}" class="btn">
+                        <button type="submit" formaction="{{ url_for('send_ad_request', influencer_id=influ.id,camp_id=camp_id) }}" class="btn">
                             Send Request <i class="fa fa-envelope" aria-hidden="true"></i>
                         </button>
                     </div> 

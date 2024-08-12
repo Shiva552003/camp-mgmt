@@ -1,0 +1,25 @@
+{% extends 'layout_inner.html' %}
+{% block content %}
+<div class="campaigns">
+    <div class="title_n_view">
+        <h3>View <span class="heading">Campaign</span></h3>
+    </div>
+    {% for camp in campaign %}
+    <div class="cust_card">
+        <div class="cust_card_body" style="width: 50%;">
+            <h4 class="card-title">{{camp.name}}</h4>
+            <p class="p_label">Description</p>
+            <p class="card-text">{{camp.desc}}</p>
+            <p class="p_label">Category</p>
+            <p class="card-text">{{camp.category}}</p>
+
+        </div>
+        <div class="cust_card_body_right center-item">
+            <a href="" class="btn"> Send Ad Request <i class="fa fa-list" aria-hidden="true"></i></a>
+        </div>
+    </div>
+    {% endfor %}
+    {% if campaign|length == 0 %}
+        <h2>No <span class="heading">Live Campaigns</span> from the sponsor</h2>
+    {% endif %}
+{% endblock %}
