@@ -154,7 +154,7 @@ def view(id,role):
     else:
         return redirect(url_for('search_all', filter_option=role))
 
-    return render_template('admin/view.html', active="find",view=view,camp=camp,spon=spon,ad=ads,influ=influ)
+    return render_template('admin/view.html', active="find",view=view,camp=camp,spon=spon,ads=ads,influ=influ)
  
     # spon=Sponsor.query.get(camp.spon_id)
     # ads = Ad.query.filter_by(spon_id=camp.spon_id).all()

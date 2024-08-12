@@ -38,10 +38,11 @@
                 {% if edit %}
                 <button type="submit" class="center_item btn">Save</button>
                 {% else %}
-                <a href="" class="center_item btn">Edit</a>
+                <a href="{{url_for('spon_update_ad',ad_id=ads.id)}}" class="center_item btn">Edit</a>
+                <br>
+                <a href="{{url_for('delete_ad',ad_id=ads.id)}}" class="center_item btn btn_red">Delete</a>
                 {% endif %}
             </div>
-            <a href="{{url_for('delete_ad',ad_id=ads.id)}}" class="center_item btn btn_red">Delete</a>
         </div>
     </form>
 </div>

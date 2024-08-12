@@ -42,7 +42,6 @@
                 {% if edit %}
                 <button type="submit" class="center_item btn">Save</button>
                 {% else %}
-                <a href="" class="center_item btn">Negotiate</a>
                 {% endif %}
             </div>
             <a href="{{url_for('reject_ad_request',req_id=ad_request.id)}}" class="center_item btn reject">Reject</a>

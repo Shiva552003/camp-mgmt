@@ -1,7 +1,7 @@
 from flask import flash, render_template, request,session, url_for,redirect,send_file
 from main import app
 from wrappers import influencer_required
-from model import Influencer,Campaign, Ad_request,Ad, Sponsor
+from model import Influencer,Campaign, Ad_request,Ad, Sponsor,db
 import io
 from datetime import date
 
@@ -79,11 +79,11 @@ def render_result_ads_influ():
                 adRs = Ad_request.query.filter(Ad_request.influ_id == session['userId'],Ad_request.ad_name.contains(search_query),Ad_request.status=='rejected').all()
                 statusName="Rejected Ad requests"
             elif status == 'ad_request_p':
-                adRs = Ad_request.query.filter(Ad_request.influ_id == session['userId'],Ad_request.ad_name.contains(search_query),Ad_request.sender=='s',Ad_request.status!='rejected').all()
+                adRs = Ad_request.query.filter(Ad_request.influ_id == session['userId'],Ad_request.ad_name.contains(search_query),Ad_request.sender=='i',Ad_request.status!='rejected').all()
                 statusName="Pending Ad requests"
             elif status == 'ad_request_n':
-                adRs = Ad_request.query.filter(Ad_request.influ_id == session['userId'],Ad_request.ad_name.contains(search_query),Ad_request.sender=='i',Ad_request.status!='rejected').all()
-                statusName="New Ad requests from Influencer"
+                adRs = Ad_request.query.filter(Ad_request.influ_id == session['userId'],Ad_request.ad_name.contains(search_query),Ad_request.sender=='s',Ad_request.status!='rejected').all()
+                statusName="New Ad requests from Sponsor"
     else:
         if status == 'All':
             ads = Ad.query.filter(Ad.influ_id == session['userId']).all()
@@ -99,11 +99,11 @@ def render_result_ads_influ():
                 adRs = Ad_request.query.filter(Ad_request.influ_id == session['userId'],Ad_request.status=='R').all()
                 statusName="Rejected Ad Requests"
             elif status == 'ad_request_p':
-                adRs = Ad_request.query.filter(Ad_request.influ_id == session['userId'],Ad_request.sender=='s',Ad_request.status!='R').all()
+                adRs = Ad_request.query.filter(Ad_request.influ_id == session['userId'],Ad_request.sender=='i',Ad_request.status!='R').all()
                 statusName="Pending Ad Requests"
             elif status == 'ad_request_n':
-                adRs = Ad_request.query.filter(Ad_request.influ_id == session['userId'],Ad_request.sender=='i',Ad_request.status!='R').all()
-                statusName="All New Ad requests from Influencer"
+                adRs = Ad_request.query.filter(Ad_request.influ_id == session['userId'],Ad_request.sender=='s',Ad_request.status!='R').all()
+                statusName="All New Ad requests from Sponsor"
 
     if ads==[] and adRs==[]:
         flash("No Ads found", "danger")
@@ -166,6 +166,101 @@ def all_camps_of_spon():
 
     return render_template('influencer/view_campaign.html', active='find',campaign=results)
 
+
+@app.route('/send/influ/ad_req', methods=['GET', 'POST'])
+@influencer_required
+def send_ad_request_influ():
+    camp_id = request.args.get('camp_id')
+    current_date = date.today()
+    campaign = Campaign.query.get(camp_id)
+    
+    if request.method == 'POST':
+        ad_name = request.form.get('ad_name')
+        budget = request.form.get('budget')
+        comments = request.form.get('comments')
+        growth_promise = request.form.get('growth_promise')
+        influ_id = session['userId']
+        spon_id = campaign.spon_id
+        
+        new_ad_request = Ad_request(
+            ad_name=ad_name,
+            influ_id=influ_id,
+            spon_id=spon_id,
+            comments=comments,
+            amount=budget,
+            campaign_id=camp_id,
+            growth_promise=growth_promise,
+            sender='i',
+            status="P"
+        )
+        
+        db.session.add(new_ad_request)
+        db.session.commit()
+        flash("Successful","success")
+        return redirect(url_for('influ_home'))
+
+    return render_template('influencer/influ_ad_request.html',active='find',campaign=campaign)
+
+
+@app.route('/edit/influencer/<int:influ_id>', methods=['GET', 'POST'])
+def edit_view_influencer(influ_id):
+    influencer = Influencer.query.get(influ_id)
+    edit = request.args.get('edit', False)
+    
+    if request.method == 'POST':
+        influencer.name = request.form['name']
+        influencer.desc = request.form['desc']
+        influencer.industry = request.form['industry']
+        influencer.niche = request.form['niche']
+        influencer.insta_id = request.form['insta_id']
+        influencer.insta_followers = request.form['insta_followers']
+        influencer.youtube_id = request.form['youtube_id']
+        influencer.youtube_channel = request.form['youtube_channel']
+        influencer.youtube_followers = request.form['youtube_followers']
+        influencer.x_id = request.form['x_id']
+        influencer.x_name = request.form['x_name']
+        influencer.x_followers = request.form['x_followers']
+        
+        db.session.commit()
+        flash("Successful","success")
+        return redirect(url_for('influ_home'))
+    
+    return render_template('influencer/view_details.html',influencer=influencer,edit=edit)
+
+@app.route('/influencer/view/ad_request')
+def view_ad_request_influ():
+    req_id = request.args.get('req_id')
+    only_view = request.args.get('only_view',False)
+    ad_request=Ad_request.query.get(req_id);
+    sponsor = Sponsor.query.get(ad_request.spon_id)
+    influencer = Influencer.query.get(ad_request.influ_id)
+    camp=Campaign.query.get(ad_request.campaign_id)
+
+    return render_template('influencer/view_ad_request.html',active="home",ad_request=ad_request,sponsor=sponsor,influencer=influencer,camp=camp,only_view=only_view)
+
+@app.route('/influ/accept/ad_req')
+def accept_ad_request_influ():
+    req_id = request.args.get('req_id')
+    ad_request = Ad_request.query.get(req_id)
+    
+    if ad_request:
+        new_ad = Ad(influ_id=ad_request.influ_id,spon_id=ad_request.spon_id,campaign_id=ad_request.campaign_id,name=ad_request.ad_name,desc=ad_request.comments,ad_status='Pending',is_flagged=False,amount=ad_request.amount,payment_status='Not Paid')
+
+        db.session.add(new_ad)
+        db.session.delete(ad_request)
+        db.session.commit()
+        flash("Successful","success")
+    return redirect(url_for('influ_home'))
+
+@app.route('/influ/reject/ad_req')
+def reject_ad_request_influ():
+    req_id = request.args.get('req_id')
+    ad_request = Ad_request.query.get(req_id)
+    
+    ad_request.status='R'
+    db.session.commit()
+    flash('Operation successful', 'success')
+    return redirect(url_for('influ_home'))
 
 @app.route('/stats/influencer')
 @influencer_required

@@ -1,0 +1,47 @@
+{% extends 'layout_inner.html' %}
+{% block style %}    
+{% endblock %}
+{% block content %}
+<div class="container">
+    <h1>View <span class="heading">Campaign</span></h1>
+    <form action="{{ url_for('update_camp', camp_id=camp.id) }}" method="POST">
+        <div class="mb-3">
+            <label for="campaign_name" class="form-label">Campaign Name</label>
+            <input type="text" id="campaign_name" name="campaign_name" class="form-control" value="{{ camp.name }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="campaign_budget" class="form-label">Budget</label>
+            <input type="number" id="campaign_budget" name="campaign_budget" class="form-control" value="{{ camp.budget }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="campaign_description" class="form-label">Description</label>
+            <textarea id="campaign_description" name="campaign_description" class="form-control" required>{{ camp.desc }}</textarea>
+        </div>
+
+        <div class="mb-3">
+            <label for="campaign_category" class="form-label">Category</label>
+            <input type="text" id="campaign_category" name="campaign_category" class="form-control" value="{{ camp.category }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="campaign_start_date" class="form-label">Start Date</label>
+            <input type="date" id="campaign_start_date" name="campaign_start_date" class="form-control" value="{{ camp.start_date }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="campaign_end_date" class="form-label">End Date</label>
+            <input type="date" id="campaign_end_date" name="campaign_end_date" class="form-control" value="{{ camp.end_date }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="campaign_goal_users" class="form-label">Goal Users</label>
+            <input type="number" id="campaign_goal_users" name="campaign_goal_users" class="form-control" value="{{ camp.goal_users }}" required>
+        </div>
+
+        <div class="center_item" style="margin-bottom: 25px;">
+            <button type="submit" class="btn" style="width: 10vw">Update</div>
+    </form>
+</div>
+{% endblock %}

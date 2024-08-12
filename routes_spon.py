@@ -104,7 +104,7 @@ def add_campaigns_Post():
             spon_id=session['userId'],
             name=name,
             budget=budget,
-            description=desc,
+            desc=desc,
             category=industry,
             start_date=s_date,
             end_date=e_date,
@@ -126,6 +126,26 @@ def spon_view_camp(camp_id):
 
     return render_template('sponsor/view_camp.html', active='campaigns', camp=camp,ads=ads,editable=editable)
 
+@app.route('/sponsor/update/spon', methods=['GET', 'POST'])
+def update_camp():
+    camp_id = request.args.get('camp_id')
+    camp = Campaign.query.get(camp_id)
+
+    if request.method == 'POST':
+        camp.name = request.form.get('campaign_name')
+        camp.budget = request.form.get('campaign_budget')
+        camp.desc = request.form.get('campaign_description')
+        camp.category = request.form.get('campaign_category')
+        camp.start_date = datetime.strptime(request.form.get('campaign_start_date'), '%Y-%m-%d').date()
+        camp.end_date = datetime.strptime(request.form.get('campaign_end_date'), '%Y-%m-%d').date()
+        camp.goal_users = request.form.get('campaign_goal_users')
+        db.session.commit()
+        flash("Successfull","success")
+        return redirect(url_for('spon_view_camp',camp_id=camp.id))
+    
+    return render_template('sponsor/update_camp.html', camp=camp)
+
+
 @app.route('/sponsor/view_ad/<int:ad_id>')
 def spon_view_ad(ad_id):
     ad = Ad.query.filter_by(id=ad_id).first()
@@ -135,6 +155,23 @@ def spon_view_ad(ad_id):
 
     return render_template('sponsor/view_ad.html', active='campaigns', ads=ad,sponsor=sponsor,camp=camp,influencer=influencer)
 
+
+@app.route('/sponsor/update_ad/<int:ad_id>', methods=['GET', 'POST'])
+def spon_update_ad(ad_id):
+    ad = Ad.query.filter_by(id=ad_id).first()
+    sponsor = Sponsor.query.get(ad.spon_id)
+    influencer = Influencer.query.get(ad.influ_id)
+    camp = Campaign.query.get(ad.campaign_id)
+
+    if request.method == 'POST':
+        ad.name = request.form.get('ad_name')
+        ad.desc = request.form.get('comments')
+        ad.amount = request.form.get('amount')
+        db.session.commit()
+        flash('Successful',"success")
+        return redirect(url_for('spon_view_ad', ad_id=ad_id))
+
+    return render_template('sponsor/view_ad.html',active='campaigns',ads=ad,sponsor=sponsor,camp=camp,influencer=influencer,edit=True)
 @app.route('/sponsor/delete')
 def delete_ad():
     ad_id=request.args.get('ad_id');
@@ -223,19 +260,6 @@ def send_ad_request_from_find():
 
     flash('Choose campaigns first','warning')
     return redirect(url_for('spon_campaigns'))
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -373,22 +397,6 @@ def spon_find():
         results=[]
 
     return render_template('sponsor/find_influ.html', active='find', findActive="influ",influencers=results)
-
-# @app.route('/stats/sponsor')
-# @sponsor_required
-# def spon_stats():
-#     spon_id = session['userId'];
-
-#     no_of_ads = Ad.query.filter_by(spon_id=spon_id).count()
-#     no_of_collabs = Ad.query.filter_by(spon_id=spon_id).distinct(Ad.influ_id).count()
-#     no_of_camps = Campaign.query.filter_by(spon_id=spon_id).count()
-#     total_amount_spent = Ad.query.with_entities(func.sum(Ad.amount)).filter_by(spon_id=spon_id).scalar()
-
-#     labels = ['Campaigns Created', 'Ads Created', 'Collaborations', 'Amount Spent']
-#     data = [no_of_camps, no_of_ads, no_of_collabs, total_amount_spent]
-
-#     return render_template('sponsor/stats.html', labels=labels, data=data, active='stats')
-
 
 @app.route('/stats/sponsor')
 @sponsor_required

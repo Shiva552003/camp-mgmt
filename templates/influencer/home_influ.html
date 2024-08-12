@@ -22,13 +22,12 @@
             </div> -->
         </div>
         <div class="view center_item" style="margin-top: 60%;">
-            <a href="" class="btn">View All Details</a>
+            <a href="{{url_for('edit_view_influencer',influ_id=influ.id)}}" class="btn">View All Details</a>
         </div>
     </div>
     <div class="campaigns_info">
         <div class="title_n_view">
             <h3>Live Campaigns:</h3>
-            <a href="" class="btn">View All <i class="fa fa-arrow-right" aria-hidden="true"></i></a>
         </div>
         {% for camp in live_campaigns %}
         <div class="cust_card">
@@ -45,7 +44,7 @@
         <br>
         <div class="title_n_view">
             <h3>New Requests:</h3>
-            <a href="" class="btn">View All <i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+            <a href="{{url_for('render_result_ads_influ',status="ad_request_n",search_query="")}}" class="btn">View All <i class="fa fa-arrow-right" aria-hidden="true"></i></a>
         </div>
         {% for req in new_requests %}
         <div class="cust_card">
@@ -54,7 +53,7 @@
                 <p class="card-text"><span class="p_lable">Amount : </span>{{req.amount}}</p>
             </div>
             <div class="cust_card_body_right center-item">
-                <a href="" class="btn">View <i class="fa fa-list" aria-hidden="true"></i></a>
+                <a href="{{url_for('view_ad_request_influ',req_id=req.id)}}" class="btn">View <i class="fa fa-list" aria-hidden="true"></i></a>
             </div>
         </div>
         {% endfor %}
@@ -62,7 +61,7 @@
         <br>
         <div class="title_n_view">
             <h3> Pending Requests</h3>
-            <a href="" class="btn">View All <i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+            <a href="{{url_for('render_result_ads_influ',status='ad_request_p',search_query='')}}" class="btn">View All <i class="fa fa-arrow-right" aria-hidden="true"></i></a>
         </div>
         {% for req in pending_requests %}
         <div class="cust_card">
@@ -71,7 +70,7 @@
                 <p class="card-text"><span class="p_lable">Amount : </span>{{req.amount}}</p>
             </div>
             <div class="cust_card_body_right center-item">
-                <a href="" class="btn">View <i class="fa fa-list" aria-hidden="true"></i></a>
+                <a href="{{url_for('view_ad_request_influ',req_id=req.id,only_view=True)}}" class="btn">View <i class="fa fa-list" aria-hidden="true"></i></a>
             </div>
         </div>
         {% endfor %}
