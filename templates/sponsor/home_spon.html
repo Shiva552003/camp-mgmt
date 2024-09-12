@@ -54,7 +54,7 @@
                 <p class="card-text">{{req.comments}}</p>
             </div>
             <div class="cust_card_body_right center-item">
-                <a href="{{url_for('view_ad_request',req_id=req.id)}}" class="btn">View <i class="fa fa-list" aria-hidden="true"></i></a>
+                <a href="{{url_for('view_ad_request_new',req_id=req.id)}}" class="btn">View <i class="fa fa-list" aria-hidden="true"></i></a>
             </div>
         </div>
         {% endfor %}
@@ -75,7 +75,7 @@
                 <p class="card-text">{{req.comments}}</p>
             </div>
             <div class="cust_card_body_right center-item">
-                <!-- <a href="" class="btn">View <i class="fa fa-list" aria-hidden="true"></i></a> -->
+                <a href="{{url_for('view_ad_request',req_id=req.id)}}" class="btn">View <i class="fa fa-list" aria-hidden="true"></i></a>
             </div>
         </div>
         {% endfor %}

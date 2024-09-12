@@ -36,7 +36,7 @@
                 <p class="card-text">{{camp.desc}}</p>
             </div>
             <div class="cust_card_body_right center-item">
-                <a href="" class="btn">View <i class="fa fa-list" aria-hidden="true"></i></a>
+                <a href="{{url_for('influ_view_camp',camp_id=camp.id)}}" class="btn">View <i class="fa fa-list" aria-hidden="true"></i></a>
             </div>
         </div>
         {% endfor %}
@@ -70,7 +70,7 @@
                 <p class="card-text"><span class="p_lable">Amount : </span>{{req.amount}}</p>
             </div>
             <div class="cust_card_body_right center-item">
-                <a href="{{url_for('view_ad_request_influ',req_id=req.id,only_view=True)}}" class="btn">View <i class="fa fa-list" aria-hidden="true"></i></a>
+                <a href="{{url_for('view_ad_request_influ',req_id=req.id,)}}" class="btn">View <i class="fa fa-list" aria-hidden="true"></i></a>
             </div>
         </div>
         {% endfor %}

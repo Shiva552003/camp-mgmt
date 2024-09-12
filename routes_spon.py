@@ -283,6 +283,8 @@ def render_result_ads():
     ads = []
     adRs = []
     statusName=""
+    pen_req=False
+    new_req=False
 
     if status and search_query:
         if status == 'All':
@@ -300,9 +302,11 @@ def render_result_ads():
                 statusName="Rejected Ad requests"
             elif status == 'ad_request_p':
                 adRs = Ad_request.query.filter(Ad_request.spon_id == session['userId'],Ad_request.ad_name.contains(search_query),Ad_request.sender=='s',Ad_request.status!='rejected').all()
+                pen_req=True
                 statusName="Pending Ad requests"
             elif status == 'ad_request_n':
                 adRs = Ad_request.query.filter(Ad_request.spon_id == session['userId'],Ad_request.ad_name.contains(search_query),Ad_request.sender=='i',Ad_request.status!='rejected').all()
+                new_req=True
                 statusName="New Ad requests from Influencer"
     else:
         if status == 'All':
@@ -320,15 +324,17 @@ def render_result_ads():
                 statusName="Rejected Ad Requests"
             elif status == 'ad_request_p':
                 adRs = Ad_request.query.filter(Ad_request.spon_id == session['userId'],Ad_request.sender=='s',Ad_request.status!='R').all()
+                pen_req=True
                 statusName="Pending Ad Requests"
             elif status == 'ad_request_n':
                 adRs = Ad_request.query.filter(Ad_request.spon_id == session['userId'],Ad_request.sender=='i',Ad_request.status!='R').all()
+                new_req=True
                 statusName="All New Ad requests from Influencer"
 
     if ads==[] and adRs==[]:
         flash("No Ads found", "danger")
 
-    return render_template('sponsor/find_ads.html', active='find', findActive="ads", ads=ads, adRs=adRs, statusName=statusName)
+    return render_template('sponsor/find_ads.html', active='find', findActive="ads", ads=ads, adRs=adRs, statusName=statusName,new_req=new_req,pen_req=pen_req)
 
 @app.route('/find/sponsor/Camp', methods=['GET', 'POST'])
 @sponsor_required
@@ -462,14 +468,23 @@ def view_all_pending_req():
 def view_ad_request():
     req_id = request.args.get('req_id')
     negotiate = request.args.get('negotiate')
-    only_view = False
-    only_view = request.args.get('only_view')
     ad_request=Ad_request.query.get(req_id);
     sponsor = Sponsor.query.get(ad_request.spon_id)
     influencer = Influencer.query.get(ad_request.influ_id)
     camp=Campaign.query.get(ad_request.campaign_id)
 
-    return render_template('sponsor/view_ad_request.html',active="home",ad_request=ad_request,edit=False,sponsor=sponsor,influencer=influencer,camp=camp,only_view=only_view)
+    return render_template('sponsor/view_ad_request.html',active="home",ad_request=ad_request,sponsor=sponsor,influencer=influencer,camp=camp,)
+
+@app.route('/view/ad_request_new')
+def view_ad_request_new():
+    req_id = request.args.get('req_id')
+    print("req_id " , req_id)
+    ad_request=Ad_request.query.get(req_id);
+    sponsor = Sponsor.query.get(ad_request.spon_id)
+    influencer = Influencer.query.get(ad_request.influ_id)
+    camp=Campaign.query.get(ad_request.campaign_id)
+
+    return render_template('sponsor/view_ad_request_new.html',active="home",ad_request=ad_request,sponsor=sponsor,influencer=influencer,camp=camp)
 
 @app.route('/accept/ad_req')
 def accept_ad_request():
@@ -493,6 +508,38 @@ def reject_ad_request():
     flash('Operation successful', 'success')
     db.session.commit()
     return redirect(url_for('spon_home'))
+
+@app.route('/delete/ad_req')
+def delete_ad_request():
+    req_id = request.args.get('req_id')
+    ad_request = Ad_request.query.get(req_id)
+    
+    if ad_request:
+        db.session.delete(ad_request)
+        db.session.commit()
+        flash('Ad request deleted successfully', 'success')
+    else:
+        flash('Ad request not found', 'error')
+    
+    return redirect(url_for('spon_home'))
+
+@app.route('/save_ad_request/<int:req_id>', methods=['POST'])
+def save_ad_request(req_id):
+    # req_id = request.form.get('req_id')
+    print("req_id " , req_id)
+    ad_request = Ad_request.query.get(req_id)
+
+    if ad_request:
+        ad_request.ad_name = request.form.get('ad_name')
+        ad_request.comments = request.form.get('comments')
+        ad_request.amount = request.form.get('amount')
+        ad_request.growth_promise = request.form.get('growth_promise')
+        db.session.commit()
+        flash('Ad request updated successfully!', 'success')
+    else:
+        flash('Ad request not found!', 'danger')
+
+    return redirect(url_for('view_ad_request', req_id=req_id))
 
 @app.route('/delete/campaign')
 def delete_campaign():

@@ -58,9 +58,17 @@
                     <p class="p_label">Amount</p>
                     <p class="card-text">{{ad.amount}}</p>
                 </div>
-                <div class="cust_card_body_right center-item">
-                    <a href="{{url_for('view_ad_request',req_id=ad.id,only_view=True)}}" class="btn">View <i class="fa fa-list" aria-hidden="true"></i></a>
-                </div> 
+
+                {% if pen_req == True %}
+                    <div class="cust_card_body_right center-item">
+                        <a href="{{url_for('view_ad_request',req_id=ad.id)}}" class="btn">View <i class="fa fa-list" aria-hidden="true"></i></a>
+                    </div> 
+                {% endif %}
+                {% if new_req == True %}
+                    <div class="cust_card_body_right center-item">
+                        <a href="{{url_for('view_ad_request_new',req_id=ad.id)}}" class="btn">View <i class="fa fa-list" aria-hidden="true"></i></a>
+                    </div> 
+                {% endif %}
             </div>
         {% endfor %}
         {% endif %}

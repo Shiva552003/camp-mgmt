@@ -164,17 +164,25 @@ def view(id,role):
 @app.route('/statsAll')
 @admin_required
 def admin_stats():
-    sponsors = Sponsor.query.all()
+    try:
+        sponsors = Sponsor.query.all()
 
-    labels = []
-    data = []
+        labels = []
+        data = []
 
-    for sponsor in sponsors:
-        campaign_count = Campaign.query.filter_by(spon_id=sponsor.id).count()
-        labels.append(sponsor.name)
-        data.append(campaign_count)
+        for sponsor in sponsors:
+            campaign_count = Campaign.query.filter_by(spon_id=sponsor.id).count()
+            labels.append(sponsor.name)
+            data.append(campaign_count)
 
-    labels_data = sorted(zip(labels, data), key=lambda x: x[1], reverse=True)
-    labels, data = zip(*labels_data)
+        if labels and data:
+            labels_data = sorted(zip(labels, data), key=lambda x: x[1], reverse=True)
+            labels, data = zip(*labels_data)
+        else:
+            labels, data = [], []
+
+    except Exception as e:
+        flash("No sponsors currently available", "danger")
+        labels, data = [], []
 
     return render_template('admin/stats.html', active='stats', labels=labels, data=data)

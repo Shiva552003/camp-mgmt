@@ -1,3 +1,4 @@
+from operator import or_
 from flask import flash, render_template, request,session, url_for,redirect,send_file
 from main import app
 from wrappers import influencer_required
@@ -132,7 +133,8 @@ def render_result_camp_influ():
     if spon_name and search_query:
         camps = Campaign.query.join(Sponsor).filter(Sponsor.name.contains(spon_name),Campaign.name.contains(search_query),Campaign.status!="private").all()
     elif spon_name:
-        camps = Campaign.query.join(Sponsor).filter(Sponsor.name.contains(spon_name), Campaign.status!="private").all()
+        camps = Campaign.query.join(Sponsor).filter(Sponsor.name.contains(spon_name)).all()
+        print(camps)
     elif search_query:
         camps = Campaign.query.filter(Campaign.name.contains(search_query),Campaign.status!="private").all()
     if not camps:
@@ -162,9 +164,9 @@ def all_camps_of_spon():
     spon_id=request.args.get('spon_id')
     current_date = date.today()
     if(spon_id):
-        results = Campaign.query.filter(Campaign.spon_id==spon_id,Campaign.is_flagged.is_(False),Campaign.end_date > current_date,Campaign.status!="private").all()
+        results = Campaign.query.filter(Campaign.spon_id==spon_id,Campaign.is_flagged.is_(False),Campaign.end_date > current_date,or_(Campaign.status != "private", Campaign.status.is_(None))).all()
 
-    return render_template('influencer/view_campaign.html', active='find',campaign=results)
+    return render_template('influencer/view_all_campaigns.html', active='find',campaign=results)
 
 
 @app.route('/send/influ/ad_req', methods=['GET', 'POST'])
@@ -172,6 +174,7 @@ def all_camps_of_spon():
 def send_ad_request_influ():
     camp_id = request.args.get('camp_id')
     current_date = date.today()
+    print("camp id", camp_id)
     campaign = Campaign.query.get(camp_id)
     
     if request.method == 'POST':
@@ -266,3 +269,12 @@ def reject_ad_request_influ():
 @influencer_required
 def influ_stats():
     return render_template('influencer/stats.html', active='stats')
+
+@app.route('/influ/view_campaign/<int:camp_id>')
+def influ_view_camp(camp_id):
+    camp = Campaign.query.filter_by(id=camp_id).first()
+    ads = Ad.query.filter_by(campaign_id=camp.id).all()
+    current_date = date.today()
+
+
+    return render_template('influencer/view_camp.html', active='home', camp=camp,ads=ads)
